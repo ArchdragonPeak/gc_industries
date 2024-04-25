@@ -3,7 +3,7 @@ const app = express();
 
 // Beispiel Route
 app.get('/', (req, res) => {
-  res.send('Hallo Welt!');
+  res.send('Die ist ein Test');
 });
 
 // Starte den Server
