@@ -1,0 +1,52 @@
+
+# Vorläufige .gitignore!
+
+
+# Abhängigkeiten
+/node_modules/
+
+# Logdateien
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime Daten
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Verzeichnis für gebaute Quellen
+/dist
+
+# Umgebungsvariablen
+.env
+.env.test
+
+# MacOS Dateien
+.DS_Store
+
+# Editor Verzeichnisse und Dateien
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# IDE - VSCode
+.settings/
+
+# Tests
+/coverage
+/.nyc_output
+
+# Produktionsdateien
+/build
+
+# Temporäre Dateien
+*.tmp
+*.temp
+*.swp
