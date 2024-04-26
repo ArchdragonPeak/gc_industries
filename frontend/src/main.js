@@ -1,4 +1,9 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 
-createApp(App).mount('#app')
+import TestGameList from './TestGameList.vue'
+
+createApp(TestGameList).mount('#gamelist');
+
+createApp(App).mount('#app');
+
