@@ -1,20 +1,26 @@
 <template>
-    <a href="http://www.google.de" >
     <div class="gamelistitem">
-        <img id="logo" alt="Hallo" src= "../../public/img/rndicon.webp" height="96" width="96">
-        <p id="title"> Titel: {{ title }}</p>
-        <p id="genres"> Genres: {{ genres }}</p>
+        <div class="gameicon">
+            <img alt="Hallo" :src= gamelogo height="96" width="96">
+        </div>
+        <div class="gameinfo">
+            <p id="title">{{ title }}</p>
+            <p id="genres">{{ genres }}</p>
+        </div>
+        <div class="rating">
+            <p id="rating"> Rating: {{ rating }} </p>
+        </div>
     </div>
-    </a>
 </template>
 
 <script>
     export default {
         name: 'GameListItem',
         props: {
-            gamelogo: String,
+            gamelogo: URL,
             title: String,
-            genres: String
+            genres: String,
+            rating: Number
         },
 
         data: function() {
@@ -27,17 +33,28 @@
 </script>
 
 <style scoped>
-    div{
-        border-style: dashed;
-        border-width: 2px;
-        border-color: lightblue;
-        display: flow-root;
+    .gameinfo{
+        display: inline-block;
+        vertical-align: top;
+    }
+    .gameicon{
+        display: inline-block;
+    }
+    .gamelistitem{
+        display: flex;
+        justify-content: center;
+        transition: 1s;
+    }
+    .rating{
+        display: flex;
+        vertical-align: bottom;
     }
     p{
         margin-top: 0px;
         margin-bottom: 0px;
     }
     #title{
+        display: inline-block;
         font-family: 'Times New Roman', Times, serif;
         font-weight: bold;
         font-size: 35px;
@@ -46,12 +63,21 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 18px; 
     }
-    img{
-        float: inline-start;
-        margin-right: 5px;
+    #rating{
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        color: slateblue;
+        margin-top: 50%;
+        margin-left: 10px;
     }
-    div:hover{
+    img{
+        display: inline-block;
+        margin-right: 5px;
+        border-radius: 20px;
+    }
+    div:hover.gamelistitem{
         background-color: gainsboro;
+        animation: test 0.5s;
     }
     a:visited{
         text-decoration: dotted;
@@ -60,5 +86,15 @@
     a{
         text-decoration: dotted;
         color: black;
+    }
+
+    @keyframes test {
+        from{
+            background-color: white;
+            
+        }
+        to{
+            background-color: gainsboro;
+        }
     }
 </style>
