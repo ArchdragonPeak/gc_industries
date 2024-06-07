@@ -1,5 +1,5 @@
 <template>
-    <div class="gamelistitem" @click="this.$router.push({path:'/game', params: { id }})">
+    <div class="gamelistitem" @click="this.$router.push({path:'/game/1'})">
         <div class="gameicon">
             <img alt="Hallo" :src= gamelogo height="96" width="96">
         </div>

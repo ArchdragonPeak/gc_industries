@@ -5,9 +5,9 @@
       </span>
       <p id="logotext">GCI</p>
       <span id="threebuttons">
-        <router-link to="/about">Bibliothek</router-link>
+        <router-link to="/library">Bibliothek</router-link>
         <router-link to="/discover">Entdecken</router-link>
-        <router-link to="/Profil">Profil</router-link>
+        <router-link to="/profile">Profil</router-link>
       </span>
       <span>
         <img id="profilepicture" alt="PB" src="/img/profilepicture.png" heigth="64" width="64">

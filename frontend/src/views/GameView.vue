@@ -1,5 +1,5 @@
 <template>
-<p class="title">Spiel</p>
+<h1 class="title">Spiel</h1>
 
 <div class="wrapper">
     <div class="left">Left</div>
@@ -18,7 +18,7 @@
 
 <style>
 
-p.title {
+h1.title {
     font-family: sans-serif;
     font-size: 50px;
     text-align: center;
