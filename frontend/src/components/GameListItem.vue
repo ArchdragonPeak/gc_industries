@@ -1,5 +1,5 @@
 <template>
-    <div class="gamelistitem">
+    <div class="gamelistitem" @click="this.$router.push({path:'/game', params: { id }})">
         <div class="gameicon">
             <img alt="Hallo" :src= gamelogo height="96" width="96">
         </div>
@@ -18,6 +18,7 @@
         name: 'GameListItem',
         props: {
             gamelogo: String,
+            id: String,
             title: String,
             genres: String,
             rating: String
