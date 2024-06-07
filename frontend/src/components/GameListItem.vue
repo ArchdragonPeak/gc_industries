@@ -17,25 +17,19 @@
     export default {
         name: 'GameListItem',
         props: {
-            gamelogo: URL,
+            gamelogo: String,
             title: String,
             genres: String,
-            rating: Number
-        },
-
-        data: function() {
-            return {
-                publicPath: process.env.BASE_URL
-            }
+            rating: String
         }
     }
-
 </script>
 
 <style scoped>
     .gameinfo{
         display: inline-block;
         vertical-align: top;
+        width: 50%;
     }
     .gameicon{
         display: inline-block;
@@ -44,6 +38,7 @@
         display: flex;
         justify-content: center;
         transition: 1s;
+        margin: 0% 0% 15px;
     }
     .rating{
         display: flex;
@@ -83,6 +78,10 @@
         text-decoration: dotted;
         color: black;
     }
+    div {
+        background-color: rgba(220, 220, 220, 0.3);
+        border-radius: 5px;
+    }
     a{
         text-decoration: dotted;
         color: black;
@@ -90,7 +89,7 @@
 
     @keyframes test {
         from{
-            background-color: white;
+            background-color: whitesmoke;
             
         }
         to{

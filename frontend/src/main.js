@@ -1,9 +1,5 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import router from './router'
 
-import TestGameList from './TestGameList.vue'
-
-createApp(TestGameList).mount('#gamelist');
-
-createApp(App).mount('#app');
-
+createApp(App).use(router).mount('#app')
