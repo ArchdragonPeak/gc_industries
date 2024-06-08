@@ -1,15 +1,15 @@
 <template>
-<h1 class="title">Spiel</h1>
+    <h1 class="title">Spiel</h1>
 
-<div class="wrapper">
-    <div class="left">Left</div>
+    <div class="wrapper">
+        <div class="left">Left</div>
 
-    <div class="game">
-        <p>Game</p>
+        <div class="main">
+            <p>Game</p>
+        </div>
+
+        <div class="right">Right</div>
     </div>
-
-    <div class="right">Right</div>
-</div>
 </template>
 
 <script>
@@ -17,7 +17,9 @@
 </script>
 
 <style>
-
+body {
+    overflow-y: scroll;
+}
 h1.title {
     font-family: sans-serif;
     font-size: 50px;
@@ -43,7 +45,7 @@ div.right {
     background-color: green;
     height: 100%
 }
-div.game {
+div.main {
     float: left;
     width: 70%;
     background-color: blue;

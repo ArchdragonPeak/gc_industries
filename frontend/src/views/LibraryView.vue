@@ -12,6 +12,9 @@ export default{
 </script>
 
 <style>
+body {
+    overflow-y: scroll;
+}
 h1.title {
     font-family: sans-serif;
     font-size: 50px;

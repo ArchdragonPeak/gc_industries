@@ -22,6 +22,9 @@ export default {
 </script>
 
 <style>
+body {
+    overflow-y: scroll;
+}
 #threebuttons {
   font-family: sans-serif;
   width: 100%;
@@ -44,6 +47,8 @@ export default {
   height: 80px;
   display: flex;
   align-items : center;
+  box-shadow: 0px 50px 200px gainsboro;
+  border-radius: 20px;
 }
 
 /* Style the links inside the navigation bar */

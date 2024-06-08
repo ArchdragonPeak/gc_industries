@@ -63,8 +63,8 @@
         font-family: Arial, Helvetica, sans-serif;
         font-size: 18px;
         color: slateblue;
-        margin-top: 50%;
-        margin-left: 10px;
+        margin: 10px 10px;
+        align-self: center;
     }
     img{
         display: inline-block;

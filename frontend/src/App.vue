@@ -6,7 +6,7 @@
         components: {
             TestGameList,
             NavBar
-        }
+        } 
   }
 
 </script>
@@ -17,6 +17,9 @@
 </template>
 
 <style scoped>
+body {
+    overflow-y: scroll;
+}
 #app {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
