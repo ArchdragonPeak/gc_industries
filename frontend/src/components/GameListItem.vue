@@ -36,6 +36,7 @@
         display: inline-block;
     }
     .gamelistitem{
+        cursor: pointer;
         display: flex;
         justify-content: center;
         transition: 1s;
