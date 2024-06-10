@@ -1,13 +1,29 @@
 <template>
-    <h1 class="title">Profil</h1>
+    <h1 class="title">Mein Profil</h1>
     <div class="wrapper">
-        <div class="left">Left</div>
-
-        <div class="main">
-            <h1> Profile.name</h1>
+        <div class="left">
+            Left
         </div>
 
-        <div class="right">Right</div>
+        <div class="main">
+            <h1> Einstellungen</h1>
+
+            <div class="grid-container">
+                <div class="grid-item">Benutzername</div>
+                <div class="grid-item">user.name</div>
+                <div class="grid-item"><button>Ändern</button></div>
+                <div class="grid-item">E-Mail</div>
+                <div class="grid-item">user.email</div>
+                <div class="grid-item"><button>Ändern</button></div>
+                <div class="grid-item">Passwort</div>
+                <div class="grid-item"><button>changepassword</button></div>
+                <div class="grid-item"></div>
+            </div>
+        </div>
+
+        <div class="right">
+            Right
+        </div>
     </div>
 
 </template>
@@ -22,6 +38,16 @@ export default{
 </script>
 
 <style scoped>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 0% 10% 0% 10%;
+}
+
+.grid-item {
+  padding: 20px;
+  text-align: left;
+}
 body {
     overflow-y: scroll;
 }

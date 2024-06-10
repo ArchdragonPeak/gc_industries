@@ -16,7 +16,7 @@
 
 </script>
 
-<style>
+<style scoped>
 body {
     overflow-y: scroll;
 }
