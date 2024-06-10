@@ -3,7 +3,7 @@
       
       <div class="company" @click="this.$router.push({path:'/about'})">
           <img id="navlogo" alt="Logo" src= "/img/gigachad_logo.png" height="64" width="64">
-          <p id="logotext">GCI</p>
+          <p class="logotext">GCI</p>
       </div>
      
       <div id="threebuttons">
@@ -11,8 +11,9 @@
         <router-link to="/discover">Entdecken</router-link>
         <router-link to="/profile">Profil</router-link>
       </div>
-      <div>
-        <img id="profilepicture" alt="PB" src="/img/profilepicture.png" heigth="64" width="64">
+      <div class="profile">
+        <p>Profile.name</p>
+        <img class="profilepicture" alt="PB" src="/img/profilepicture.png" heigth="64" width="64" @click="this.$router.push({path:'/profile'})">
       </div>
     </div>
 </template>
@@ -23,14 +24,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .company {
   cursor: pointer;
-  justify-content: center;
   display: flex;
+  align-items: center;
 }
 body {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 #threebuttons {
   font-family: sans-serif;
@@ -38,14 +39,22 @@ body {
   display: flex;
   justify-content : center;
 }
-#logotext {
+p.logotext {
   font-size: 25px;
   font-weight: bold;
   font-family: sans-serif;
   margin-left: 5px;
 }
-#profilepicture {
+div.profile {
+  display: flex;
+  text-decoration: none;
+}
+div.profile p {
+  font-family: sans-serif;
+}
+img.profilepicture {
   margin-right: 10px;
+  cursor: pointer;
 }
 /* Add a black background color to the top navigation */
 .topnav {
@@ -58,7 +67,7 @@ body {
 }
 
 /* Style the links inside the navigation bar */
-.topnav a{
+.topnav a {
   color: black;
   padding: 20px 25px;
   text-decoration: none;
