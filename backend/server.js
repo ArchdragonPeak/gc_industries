@@ -12,9 +12,9 @@ app.use(cors())
 app.use(bodyParser.json());
 
 // GET /games
-app.get('/games', (req, res) => {
+app.get('/games', async (req, res) => {
     try {
-        const games = GameModel.find();
+        const games = await GameModel.find();
         res.json(games);
     } catch (error) {
         res.status(500).send('Error retrieving games');
@@ -22,7 +22,7 @@ app.get('/games', (req, res) => {
 });
 
 // GET /games/:id
-app.get('/games/:id', (req, res) => {
+app.get('/games/:id', async (req, res) => {
     const id = (req.params.id);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -30,7 +30,7 @@ app.get('/games/:id', (req, res) => {
     }
 
     try {
-        const game = GameModel.findById(id);
+        const game = await GameModel.findById(id);
         if (game) {
             res.json(game);
         } else {
@@ -42,10 +42,10 @@ app.get('/games/:id', (req, res) => {
 });
 
 // POST /games
-app.post('/games', (req, res) => {
+app.post('/games', async (req, res) => {
     try {
         const game = new GameModel(req.body);
-        const savedGame = game.save();
+        const savedGame = await game.save();
         res.status(201).send(savedGame);
     } catch (error) {
         res.status(500).json(error);
@@ -53,7 +53,7 @@ app.post('/games', (req, res) => {
 });
 
 // PUT /games/:id
-app.put('/games/:id', (req, res) => {
+app.put('/games/:id', async (req, res) => {
     const id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -61,7 +61,7 @@ app.put('/games/:id', (req, res) => {
     }
 
     try {
-        const updatedGame = GameModel.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedGame = await GameModel.findByIdAndUpdate(id, req.body, { new: true });
         if (updatedGame) {
             res.json(updatedGame);
         } else {
@@ -73,7 +73,7 @@ app.put('/games/:id', (req, res) => {
 });
 
 // DELETE /games/:id
-app.delete('/games/:id', (req, res) => {
+app.delete('/games/:id', async (req, res) => {
     const id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -81,7 +81,7 @@ app.delete('/games/:id', (req, res) => {
     }
 
     try {
-        const deletedGame = GameModel.findByIdAndDelete(id);
+        const deletedGame = await GameModel.findByIdAndDelete(id);
         if (deletedGame) {
             res.json(deletedGame);
         } else {
