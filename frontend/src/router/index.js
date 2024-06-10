@@ -4,7 +4,7 @@ import DiscoverView from '../views/DiscoverView.vue'
 import GameView from '../views/GameView.vue'
 import LibraryView from '../views/LibraryView.vue'
 import ProfileView from '../views/ProfileView.vue'
-
+import AddGameView from '../views/AddGameView.vue'
 const routes = [
   {
     path: '/',
@@ -38,6 +38,11 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: ProfileView
+  },
+  {
+    path: '/addgame',
+    name: 'addgame',
+    component: AddGameView
   }
 ]
 
