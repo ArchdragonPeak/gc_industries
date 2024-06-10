@@ -50,3 +50,6 @@ pids
 *.tmp
 *.temp
 *.swp
+
+# Passwort Datei
+/backend/dbpassword.config
