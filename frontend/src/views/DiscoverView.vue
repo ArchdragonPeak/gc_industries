@@ -1,7 +1,6 @@
 <template>
     <h1 class="title">Entdecken</h1>
-    <TestGameList></TestGameList>
-    <TestGameList></TestGameList>
+    <TestGameList :games='games'></TestGameList>
 </template>
 
 <script>
@@ -11,8 +10,31 @@ export default{
     name: 'DiscoverView',
     components: {
         TestGameList
+    },
+    data() {
+        return {
+            games: [
+                {
+                    name: "Space Game",
+                    gameID: 1,
+                    tags: "Space, Adventure",
+                    bewertung: "4.5",
+                    gamelogo: "./img/rndicon1.webp"
+                },
+                {
+                    name: "Space Game",
+                    gameID: 2,
+                    tags: "Space, Adventure",
+                    bewertung: "4.5",
+                    gamelogo: "./img/rndicon1.webp"
+                }
+            ]
+        }
     }
+
+    
 }
+
 </script>
 
 <style scoped>

@@ -30,10 +30,10 @@ const clientOptions = {
 const GameSchema = new mongoose.Schema({
     gameID: Number,
     name: String,
-    category: Array,
-    comments: Array,
+    gamelogo: String,
+    tags: Array,
     ratings: Array,
-    tags: Array
+    comments: Array
 });
 
 const GameModel = mongoose.model("GameModel", GameSchema);

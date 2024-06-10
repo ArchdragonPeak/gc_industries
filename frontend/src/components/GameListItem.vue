@@ -1,14 +1,14 @@
 <template>
-    <div class="gamelistitem" @click="this.$router.push({path:'/game/1'})">
+    <div class="gamelistitem" @click="this.$router.push({path:'/game/' + gameID})">
         <div class="gameicon">
             <img alt="Hallo" :src= gamelogo height="96" width="96">
         </div>
         <div class="gameinfo">
-            <p id="title">{{ title }}</p>
-            <p id="genres">{{ genres }}</p>
+            <p id="title">{{ name }}</p>
+            <p id="tags">{{ tags }}</p>
         </div>
         <div class="rating">
-            <p id="rating"> Rating: {{ rating }} </p>
+            <p id="rating">Rating: {{ rating }}</p>
         </div>
     </div>
 </template>
@@ -17,11 +17,11 @@
     export default {
         name: 'GameListItem',
         props: {
+            gameID: Number,
+            name: String,
             gamelogo: String,
-            id: String,
-            title: String,
-            genres: String,
-            rating: String
+            tags: Array,
+            rating: Array
         }
     }
 </script>
@@ -56,7 +56,7 @@
         font-weight: bold;
         font-size: 35px;
     }
-    #genres{
+    #tags{
         font-family: Arial, Helvetica, sans-serif;
         font-size: 18px; 
     }
