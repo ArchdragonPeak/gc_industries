@@ -14,20 +14,30 @@ export default{
     data() {
         return {
             games: [
-                {
-                    name: "Space Game",
-                    gameID: 1,
-                    tags: "Space, Adventure",
-                    bewertung: "4.5",
-                    gamelogo: "./img/rndicon1.webp"
-                },
-                {
-                    name: "Space Game",
-                    gameID: 2,
-                    tags: "Space, Adventure",
-                    bewertung: "4.5",
-                    gamelogo: "./img/rndicon1.webp"
-                }
+            {
+                "name":"Space Game","gameID":"1", "tags":"Space, Adventure","bewertung":"4.5", "gamelogo": "./img/rndicon1.webp"
+            },
+            {
+                "name":"Immortal Kombat","gameID":"2", "tags":"Action, Fighting","bewertung":"2.5", "gamelogo": "./img/rndicon2.webp"
+            },
+            {
+                "name":"Cyber Bugs 1984","gameID":"3", "tags":"Action, RPG","bewertung":"4.7", "gamelogo": "./img/rndicon3.webp"
+            },
+            {
+                "name":"Indana Joseph","gameID":"4", "tags":"Point-and-Click-Adventure","bewertung":"3.8", "gamelogo": "./img/rndicon4.webp"
+            },
+            {
+                "name":"Suka Striker","gameID":"5", "tags":"FPS, Multiplayer","bewertung":"2.9", "gamelogo": "./img/rndicon5.webp"
+            },
+            {
+                "name":"Space Game 2","gameID":"6", "tags":"Action","bewertung":"4.1", "gamelogo": "./img/rndicon1.webp"
+            },
+            {
+                "name":"Immortal Kombat 2","gameID":"7", "tags":"Action","bewertung":"4.5", "gamelogo": "./img/rndicon2.webp"
+            },
+            {
+                "name":"Cyber Bugs 1985","gameID":"8", "tags":"Action","bewertung":"4.5", "gamelogo": "./img/rndicon3.webp"
+            },
             ]
         }
     }

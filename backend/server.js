@@ -1,84 +1,96 @@
-// Laden des Express-Frameworks
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose")
-
-const GameModel = require('./models/GameSchema')
 const cors = require('cors')
 
+const GameModel = require('./models/GameSchema')
 
 const app = express();
-app.use(cors())
-
 const port = 3000;
-// Middleware zum Parsen von JSON-Anforderungskörpern
+
+app.use(cors())
 app.use(bodyParser.json());
 
-
+// GET /games
 app.get('/games', (req, res) => {
-    GameModel.find().then((doc) => res.json(doc))
+    try {
+        const games = GameModel.find();
+        res.json(games);
+    } catch (error) {
+        res.status(500).send('Error retrieving games');
+    }
 });
 
+// GET /games/:id
 app.get('/games/:id', (req, res) => {
     const id = (req.params.id);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(404).send('ID invalid');
-        return
+        return res.status(404).send('ID invalid');
     }
-    const game = GameModel.findById(id);
-    if (game) {
-        res.json(game);
-    } else {
-        res.status(404).send({message: 'Game not found'});
+
+    try {
+        const game = GameModel.findById(id);
+        if (game) {
+            res.json(game);
+        } else {
+            res.status(404).send({message: 'Game not found'});
+        }
+    } catch (error) {
+        res.status(500).send('Error retrieving game');
     }
 });
 
+// POST /games
 app.post('/games', (req, res) => {
-    let model = new GameModel(req.body)
-    model.save()
-        .then(doc => {
-            if (!doc || doc.length === 0) {
-                return res.status(500).send(doc)
-            }
-            res.status(201).send(doc)
-        })
-        .catch(err => {
-            res.status(500).json(err)
-        })
-})
+    try {
+        const game = new GameModel(req.body);
+        const savedGame = game.save();
+        res.status(201).send(savedGame);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+});
 
+// PUT /games/:id
 app.put('/games/:id', (req, res) => {
     const id = req.params.id;
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(404).send('ID invalid');
-        return
+        return res.status(404).send('ID invalid');
     }
-    GameModel.findByIdAndUpdate(id, req.body)
-        .then((doc) => {
-            if (doc)
-                res.json(doc);
-            else
-                res.status(404).send('Game not found');
-        })
+
+    try {
+        const updatedGame = GameModel.findByIdAndUpdate(id, req.body, { new: true });
+        if (updatedGame) {
+            res.json(updatedGame);
+        } else {
+            res.status(404).send('Game not found');
+        }
+    } catch (error) {
+        res.status(500).send('Error updating game');
+    }
 });
 
+// DELETE /games/:id
 app.delete('/games/:id', (req, res) => {
-    const id = (req.params.id);
+    const id = req.params.id;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        res.status(404).send('ID invalid');
-        return
+        return res.status(404).send('ID invalid');
     }
 
-    GameModel.findByIdAndDelete(id).then(
-        (deletedDocument) => {
-            if (deletedDocument)
-                res.json(deletedDocument);
-            else
-                res.status(404).send('Game not found');
-        })
-})
+    try {
+        const deletedGame = GameModel.findByIdAndDelete(id);
+        if (deletedGame) {
+            res.json(deletedGame);
+        } else {
+            res.status(404).send('Game not found');
+        }
+    } catch (error) {
+        res.status(500).send('Error deleting game');
+    }
+});
 
 
 // Starten des Servers
