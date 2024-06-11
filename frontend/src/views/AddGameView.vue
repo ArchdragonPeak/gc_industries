@@ -9,8 +9,8 @@
 
                     <div class="grid-item"> <label for="name">Name:</label> </div>
                     <div class="grid-item"> <input class="game-input" type="text" id="name" v-model="name" required> </div>
-                    <div class="grid-item"> <label for="gameID">Game ID:</label> </div>
-                    <div class="grid-item"> <input class="game-input" type="number" id="gameID" v-model="gameID" required> </div>
+                    
+                    <input class="game-input" type="number" id="gameID" v-model="gameID" style="display: none">
                     <div class="grid-item"> <label for="tags">Tags:</label> </div>
                     <div class="grid-item"> <input class="game-input" type="text" id="tags" v-model="tags" required> </div>
                     <button type="submit">Spiel speichern</button>

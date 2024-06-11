@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 const fs = require('fs');
 const path = require('path');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-// Pfad zur Passwortdatei
 const passwordFilePath = path.join(__dirname, '../dbpassword.config');
 
-// Passwort auslesen und ausgeben
 const pass = fs.readFileSync(passwordFilePath, 'utf8').trim();
 const uri = `mongodb+srv://gcindustries:${pass}@uebung2.c6giab7.mongodb.net/?retryWrites=true&w=majority&appName=uebung2`;
 
@@ -17,14 +16,8 @@ const clientOptions = {
     }
 };
 
-mongoose.set('autoIndex', true);
-
 const GameSchema = new mongoose.Schema({
-    gameID:
-    {
-        type: Number,
-        unique: true,
-    },
+    gameID: Number,
     name: String,
     gamelogo: String,
     tags: [String],
@@ -32,6 +25,7 @@ const GameSchema = new mongoose.Schema({
     comments: [String]
 });
 
+GameSchema.plugin(AutoIncrement, { inc_field: 'gameID' });
 const GameModel = mongoose.model("GameModel", GameSchema);
 
 async function run() {
