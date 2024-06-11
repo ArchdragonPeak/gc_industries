@@ -14,6 +14,34 @@
 
 <script>
 
+export default{
+    name: 'ProfileView',
+    components: {
+    },
+    data() {
+      return {
+        games: [],
+      };
+    },
+    methods: {
+      async fetchGames() {
+        try {
+          const response = await fetch('http://localhost:3000/games');
+          if (!response.ok) {
+            throw new Error('Netzwerkantwort war nicht ok');
+          }
+          const data = await response.json();
+          this.games = data;
+          //console.log(this.games);
+        } catch (error) {
+          console.error('Es gab ein Problem mit der Fetch-Operation:', error);
+        }
+      }
+    },
+    mounted() {
+      this.fetchGames();
+    }
+}
 </script>
 
 <style scoped>

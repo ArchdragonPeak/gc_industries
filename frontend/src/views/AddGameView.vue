@@ -1,13 +1,12 @@
 <template>
     <h1 class="title">Neues Spiel hinzufügen</h1>
     <div class="wrapper">
-        <div class="left">
-            
-        </div>
+        <div class="left"></div>
 
         <div class="main">
             <div>
                 <form v-if="showForm" @submit.prevent="postGame" class="form-grid">
+
                     <div class="grid-item"> <label for="name">Name:</label> </div>
                     <div class="grid-item"> <input class="game-input" type="text" id="name" v-model="name" required> </div>
                     <div class="grid-item"> <label for="gameID">Game ID:</label> </div>
@@ -15,21 +14,18 @@
                     <div class="grid-item"> <label for="tags">Tags:</label> </div>
                     <div class="grid-item"> <input class="game-input" type="text" id="tags" v-model="tags" required> </div>
                     <button type="submit">Spiel speichern</button>
+                    
                 </form>
                 <div> <label for="gamelogo" class="upload-input">Logo Hochladen</label> </div>
                 <div> <input style="display: none;" type="file" accept="image/*" id="gamelogo" required> </div>
             </div>
         </div>
 
-        <div class="right">
-            
-        </div>
+        <div class="right"></div>
     </div>
-
 </template>
 
 <script>
-
 export default{
     name: 'ProfileView',
     components: {
@@ -77,7 +73,6 @@ export default{
           console.log('Erfolgreich gesendet:', data);
           this.fetchGames();
           this.resetForm();
-          this.toggleForm();
         } catch (error) {
           console.error('Fehler bei der Anfrage:', error);
         }

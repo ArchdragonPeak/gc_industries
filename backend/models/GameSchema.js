@@ -17,8 +17,14 @@ const clientOptions = {
     }
 };
 
+mongoose.set('autoIndex', true);
+
 const GameSchema = new mongoose.Schema({
-    gameID: Number,
+    gameID:
+    {
+        type: Number,
+        unique: true,
+    },
     name: String,
     gamelogo: String,
     tags: [String],

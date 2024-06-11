@@ -11,13 +11,13 @@
             <div class="grid-container">
                 <div class="grid-item">Benutzername</div>
                 <div class="grid-item">user.name</div>
-                <div class="grid-item"><button>Ändern</button></div>
+                <div class="grid-item"><button>Ändern</button> </div>
                 <div class="grid-item">E-Mail</div>
                 <div class="grid-item">user.email</div>
-                <div class="grid-item"><button>Ändern</button></div>
+                <div class="grid-item"><button>Ändern</button> </div>
                 <div class="grid-item">Passwort</div>
-                <div class="grid-item"><button>changepassword</button></div>
-                <div class="grid-item"></div>
+                <div class="grid-item"><button>changepassword</button> </div>
+                <div class="grid-item"> </div>
             </div>
         </div>
 
@@ -25,16 +25,9 @@
             Right
         </div>
     </div>
-
 </template>
 
 <script>
-
-export default{
-    name: 'ProfileView',
-    components: {
-    }
-}
 </script>
 
 <style scoped>
