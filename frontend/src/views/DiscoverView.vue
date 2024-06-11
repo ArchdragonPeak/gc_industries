@@ -1,41 +1,59 @@
 <template>
     <h1 class="title">Entdecken</h1>
+
+    <input type="text" v-model="input" placeholder="Search fruits..." />
+    <div class="item fruit" v-for="fruit in filteredList" :key="fruit">
+      <p>{{ fruit }}</p>
+    </div>
+    <div class="item error" v-if="input&&!filteredList.length">
+      <p>No results found!</p>
+    </div>
+
     <TestGameList :games="games"></TestGameList>
   </template>
   
   <script>
-  import TestGameList from '../components/TestGameList.vue';
-  
-  export default {
-    name: 'DiscoverView',
-    components: {
-      TestGameList
-    },
-    data() {
-      return {
-        games: []
-      };
-    },
-    methods: {
-      async fetchGames() {
-        try {
-          const response = await fetch('http://localhost:3000/games');
-          if (!response.ok) {
-            throw new Error('Netzwerkantwort war nicht ok');
-          }
-          const data = await response.json();
-          this.games = data;
-          console.log(this.games);
-        } catch (error) {
-          console.error('Es gab ein Problem mit der Fetch-Operation:', error);
-        }
-      }
-    },
-    mounted() {
-      this.fetchGames();
+import TestGameList from '../components/TestGameList.vue';
+
+export default {
+  name: 'DiscoverView',
+  components: {
+    TestGameList
+  },
+  data() {
+    return {
+      games: [],
+      fruits: ["apple", "banana", "orange"],
+      input: ''
+    };
+  },
+  computed: {
+    filteredList() {
+      return this.fruits.filter((fruit) =>
+        fruit.toLowerCase().includes(this.input.toLowerCase())
+      );
     }
-  };
-  </script>
+  },
+  methods: {
+    async fetchGames() {
+      try {
+        const response = await fetch('http://localhost:3000/games');
+        if (!response.ok) {
+          throw new Error('Netzwerkantwort war nicht ok');
+        }
+        const data = await response.json();
+        this.games = data;
+        console.log(this.games);
+      } catch (error) {
+        console.error('Es gab ein Problem mit der Fetch-Operation:', error);
+      }
+    }
+  },
+  mounted() {
+    this.fetchGames();
+  }
+};
+</script>
 
 <style scoped>
 body {
