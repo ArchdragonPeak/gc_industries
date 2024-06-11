@@ -25,12 +25,8 @@ app.get('/games', async (req, res) => {
 app.get('/games/:id', async (req, res) => {
     const id = (req.params.id);
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).send('ID invalid');
-    }
-
     try {
-        const game = await GameModel.findById(id);
+        const game = await GameModel.findOne({gameID:id});
         if (game) {
             res.json(game);
         } else {
@@ -56,12 +52,8 @@ app.post('/games', async (req, res) => {
 app.put('/games/:id', async (req, res) => {
     const id = req.params.id;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).send('ID invalid');
-    }
-
     try {
-        const updatedGame = await GameModel.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedGame = await GameModel.findOneAndUpdate({gameID: id}, req.body, { new: true });
         if (updatedGame) {
             res.json(updatedGame);
         } else {
@@ -76,12 +68,8 @@ app.put('/games/:id', async (req, res) => {
 app.delete('/games/:id', async (req, res) => {
     const id = req.params.id;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).send('ID invalid');
-    }
-
     try {
-        const deletedGame = await GameModel.findByIdAndDelete(id);
+        const deletedGame = await GameModel.findOneAndDelete({gameID: id});
         if (deletedGame) {
             res.json(deletedGame);
         } else {

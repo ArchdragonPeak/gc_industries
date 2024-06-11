@@ -1,5 +1,5 @@
 <template>
-    <h1 class="title">Spiel</h1>
+    <h1 class="title">{{ game.name }}</h1>
 
     <div class="wrapper">
         <div class="left">Left</div>
@@ -8,38 +8,46 @@
             <p>Game</p>
         </div>
 
-        <div class="right">Right</div>
+        <div class="right">Spielanleitung</div>
     </div>
 </template>
 
 <script>
 
 export default{
-    name: 'ProfileView',
+    name: 'GameView',
     components: {
     },
     data() {
       return {
-        games: [],
+        game: {
+          type: {},
+          required: true
+        }
       };
     },
+    computed: {
+      gameID() {
+        return this.$route.params.id;
+      }
+    },
     methods: {
-      async fetchGames() {
+      async fetchGame() {
         try {
-          const response = await fetch('http://localhost:3000/games');
+          const response = await fetch(`http://localhost:3000/games/${this.gameID}`);
           if (!response.ok) {
             throw new Error('Netzwerkantwort war nicht ok');
           }
           const data = await response.json();
-          this.games = data;
-          //console.log(this.games);
+          this.game = data;
+          console.log(this.game);
         } catch (error) {
           console.error('Es gab ein Problem mit der Fetch-Operation:', error);
+          }
         }
-      }
     },
     mounted() {
-      this.fetchGames();
+      this.fetchGame();
     }
 }
 </script>
@@ -62,21 +70,21 @@ div.wrapper {
 }
 div.left {
     float: left;
-    width: 15%;
-    background-color: red;
+    width: 25%;
+    background-color: whitesmoke;
     height: 100%
 
 }
 div.right {
     float: left;
-    width: 15%;
-    background-color: green;
+    width: 25%;
+    background-color: whitesmoke;
     height: 100%
 }
 div.main {
     float: left;
-    width: 70%;
-    background-color: blue;
-    height: 100%
+    width: 50%;
+    background-color: gainsboro;
+    height: 100%;
 }
 </style>
