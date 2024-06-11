@@ -1,18 +1,15 @@
 <template>
-    <h1 class="title">Entdecken</h1>
-
-    <input type="text" v-model="input" placeholder="Search fruits..." />
-    <div class="item fruit" v-for="fruit in filteredList" :key="fruit">
-      <p>{{ fruit }}</p>
-    </div>
-    <div class="item error" v-if="input&&!filteredList.length">
-      <p>No results found!</p>
-    </div>
-
-    <TestGameList :games="games"></TestGameList>
-  </template>
+  <h1 class="title">Entdecken</h1>
   
-  <script>
+  <input type="text" v-model="input" placeholder="Search games..." />
+  <div class="item error" v-if="input && !filteredGames.length">
+    <p>No results found!</p>
+  </div>
+  
+  <TestGameList :games="filteredGames"></TestGameList>
+</template>
+
+<script>
 import TestGameList from '../components/TestGameList.vue';
 
 export default {
@@ -23,14 +20,13 @@ export default {
   data() {
     return {
       games: [],
-      fruits: ["apple", "banana", "orange"],
       input: ''
     };
   },
   computed: {
-    filteredList() {
-      return this.fruits.filter((fruit) =>
-        fruit.toLowerCase().includes(this.input.toLowerCase())
+    filteredGames() {
+      return this.games.filter((game) =>
+        game.name.toLowerCase().includes(this.input.toLowerCase())
       );
     }
   },
@@ -43,7 +39,7 @@ export default {
         }
         const data = await response.json();
         this.games = data;
-        console.log(this.games);
+        //console.log(this.games);
       } catch (error) {
         console.error('Es gab ein Problem mit der Fetch-Operation:', error);
       }

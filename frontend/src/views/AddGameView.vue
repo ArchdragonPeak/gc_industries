@@ -17,7 +17,7 @@
                     <button type="submit">Spiel speichern</button>
                 </form>
                 <div> <label for="gamelogo" class="upload-input">Logo Hochladen</label> </div>
-                <div> <input style="display: none;" type="file" id="gamelogo" required> </div>
+                <div> <input style="display: none;" type="file" accept="image/*" id="gamelogo" required> </div>
             </div>
         </div>
 
@@ -53,7 +53,7 @@ export default{
           }
           const data = await response.json();
           this.games = data;
-          console.log(this.games);
+          //console.log(this.games);
         } catch (error) {
           console.error('Es gab ein Problem mit der Fetch-Operation:', error);
         }

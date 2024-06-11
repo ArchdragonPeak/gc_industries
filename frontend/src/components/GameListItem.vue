@@ -5,7 +5,7 @@
         </div>
         <div class="gameinfo">
             <p id="title">{{ name }}</p>
-            <p id="tags">{{ tags }}</p>
+            <p id="tags">{{ stringifytags() }}</p>
         </div>
         <div class="rating">
             <p id="rating">Rating: {{ rating }}</p>
@@ -20,8 +20,16 @@
             gameID: Number,
             name: String,
             gamelogo: String,
-            tags: Array,
-            rating: Array
+            rating: Array,
+            tags: { //warum auch immer es required braucht
+                type: Array,
+                required: true
+            },
+        },
+        methods: {
+            stringifytags() {
+                return this.tags.join(', ');
+            }
         }
     }
 </script>

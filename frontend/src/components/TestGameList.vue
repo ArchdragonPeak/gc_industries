@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p class="listtitle" >{{ genre }}</p>
+        <p class="listtitle" >{{ listTitle }}</p>
             <GameListItem v-for="game in games"
                 :key="game.gameID"
                 :gamelogo = "game.gamelogo"
@@ -25,7 +25,7 @@
         },
         data() {
             return {
-                genre: "Action"
+                listTitle: "Angesagt"
             }
         }
     }
