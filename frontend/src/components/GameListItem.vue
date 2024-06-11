@@ -48,7 +48,7 @@
         display: flex;
         justify-content: center;
         transition: 1s;
-        margin: 0% 0% 15px;
+        margin: 0 0 15px;
     }
     .rating{
         display: flex;
@@ -90,7 +90,7 @@
     }
     div {
         background-color: rgba(220, 220, 220, 0.3);
-        border-radius: 5px;
+        border-radius: 10px;
     }
     a{
         text-decoration: dotted;

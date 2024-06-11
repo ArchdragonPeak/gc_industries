@@ -5,8 +5,8 @@
   <div class="item error" v-if="input && !filteredGames.length">
     <p>No results found!</p>
   </div>
-  
-  <TestGameList :games="filteredGames"></TestGameList>
+  <TestGameList :games="filteredGames" listTitle="Suche" v-model="input" v-if="input && filteredGames.length"></TestGameList>
+  <TestGameList :games="games" listTitle="Angesagt"></TestGameList>
 </template>
 
 <script>

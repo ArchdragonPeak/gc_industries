@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="padding-bottom: 10px;">
         <p class="listtitle" >{{ listTitle }}</p>
             <GameListItem v-for="game in games"
                 :key="game.gameID"
@@ -21,11 +21,11 @@
             GameListItem
         },
         props: {
-            games: Array
+            games: Array,
+            listTitle: String
         },
         data() {
             return {
-                listTitle: "Angesagt"
             }
         }
     }
@@ -44,7 +44,7 @@ div {
     background-color: whitesmoke;
     margin-left: 30%;
     margin-right: 30%;
-    border-radius: 20px;
+    border-radius: 50px;
 }
 
 </style>
