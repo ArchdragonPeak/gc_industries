@@ -7,7 +7,7 @@
                 :name = "game.name"
                 :gameID = "game.gameID"
                 :tags = "game.tags"
-                :rating= game.bewertung>
+                :rating= game.rating>
             </GameListItem>
     </div>
 </template>
