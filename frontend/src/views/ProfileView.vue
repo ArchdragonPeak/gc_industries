@@ -11,12 +11,12 @@
             <div class="grid-container">
                 <div class="grid-item">Benutzername</div>
                 <div class="grid-item">user.name</div>
-                <div class="grid-item"><button>Ändern</button> </div>
+                <div class="grid-item"><button id="username-button">Ändern</button> </div>
                 <div class="grid-item">E-Mail</div>
                 <div class="grid-item">user.email</div>
-                <div class="grid-item"><button>Ändern</button> </div>
+                <div class="grid-item"><button id="email-button">Ändern</button> </div>
                 <div class="grid-item">Passwort</div>
-                <div class="grid-item"><button>changepassword</button> </div>
+                <div class="grid-item"><button id="pass-button">Passwort ändern</button> </div>
                 <div class="grid-item"> </div>
             </div>
         </div>
@@ -31,6 +31,23 @@
 </script>
 
 <style scoped>
+button {
+    height: 50px;
+    width: 140px;
+    text-align: center;
+    background-color: gainsboro;
+    border-width: 1px;
+    border-radius: 8px;
+    font-size: 20px;
+}
+button:active {
+    height: 50px;
+    width: 140px;
+    text-align: center;
+    background-color: whitesmoke;
+    border-width: 1px;
+    border-color: white;
+}
 .grid-container {
   display: grid;
   grid-template-columns: auto auto auto;

@@ -1,9 +1,9 @@
 <template>
   <h1 class="title">Entdecken</h1>
   
-  <input type="text" v-model="input" placeholder="Search games..." />
+  <input class="search" type="text" v-model="input" placeholder="Spiel suchen..." />
   <div class="item error" v-if="input && !filteredGames.length">
-    <p>No results found!</p>
+    <p id="no-game-found">Es wurde leider kein Spiel gefunden!</p>
   </div>
   <TestGameList :games="filteredGames" listTitle="Suche" v-model="input" v-if="input && filteredGames.length"></TestGameList>
   <TestGameList :games="games" listTitle="Angesagt"></TestGameList>
@@ -52,6 +52,20 @@ export default {
 </script>
 
 <style scoped>
+.search {
+  background-color: gainsboro;
+  height: 50px;
+  width: 40%;
+  border: 0;
+  border-radius: 12px;
+  font-size: 35px;
+  padding-left: 2%;
+  padding-right: 2%;
+  text-align: center;
+}
+#no-game-found {
+  font-size: 25px;
+}
 body {
     overflow-y: scroll;
 }

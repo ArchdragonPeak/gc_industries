@@ -39,6 +39,7 @@
         display: inline-block;
         vertical-align: top;
         width: 50%;
+        text-align: left;
     }
     .gameicon{
         display: inline-block;
