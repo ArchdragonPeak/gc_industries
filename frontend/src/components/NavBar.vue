@@ -56,7 +56,7 @@ img.profilepicture {
   margin-right: 10px;
   cursor: pointer;
 }
-/* Add a black background color to the top navigation */
+
 .topnav {
   overflow: hidden;
   height: 80px;
@@ -66,7 +66,6 @@ img.profilepicture {
   border-radius: 20px;
 }
 
-/* Style the links inside the navigation bar */
 .topnav a {
   color: black;
   padding: 20px 25px;
@@ -80,13 +79,11 @@ img.profilepicture {
   margin-left: 10px;
 }
 
-/* Change the color of links on hover */
 .topnav a:hover {
   background-color: #ddd;
   color: black;
 }
 
-/* Add a color to the active/current link */
 .topnav a.active {
   background-color: #04AA6D;
   color: white;
