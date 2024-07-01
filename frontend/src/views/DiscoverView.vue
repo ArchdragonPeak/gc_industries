@@ -31,7 +31,7 @@ export default {
         threshold: 0.5,
         keys: ['name']
       });
-      const results = fuse.search(this.input.toLowerCase());
+      const results = fuse.search(this.input);
       return results.map(result => result.item);
     }
   },
