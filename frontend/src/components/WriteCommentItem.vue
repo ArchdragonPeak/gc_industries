@@ -17,14 +17,24 @@
 
         <div class="body">
             <div class="text-wrapper">
-                <textarea class="search" type="text" v-model="input" placeholder="Kommentar schreiben" />
+                <textarea ref="message" class="search" type="text" v-model="input" placeholder="Kommentar schreiben" />
+                <button @click="message.value = ''">abbrechen</button>
+                <button @click='sendMessage(); message.value = ""'>Senden</button>
+                
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import { ref } from "vue";
     export default {
+        setup() {
+            const message = ref(null)
+            return {
+                message
+            }
+        },
         name:'WriteCommentItem',
         props: {
                 profilepic: String,
@@ -33,7 +43,12 @@
         },
         data() {
             return {
-                datum: new Date().toLocaleDateString("de-DE", {day:"2-digit", month:"2-digit", year:"numeric",hour:"2-digit", minute:"2-digit",second:"2-digit"}) }
+                datum: new Date().toLocaleDateString("de-DE", {year:"numeric", month:"2-digit", day:"2-digit",hour:"2-digit", minute:"2-digit",second:"2-digit"}) }
+        },
+        methods: {
+            sendMessage(){
+                alert("Nachricht gesendet!")
+            }
         }
     }
 </script>
@@ -45,6 +60,7 @@
   width: 100%;
   border: 20px;
   outline: none;
+  resize: vertical;
   border: 1px dotted darkgray;
   border-radius: 12px;
   font-size: 16px;
