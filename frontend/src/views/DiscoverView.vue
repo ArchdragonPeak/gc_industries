@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import Fuse from 'fuse.js';
 import TestGameList from '../components/TestGameList.vue';
 
 export default {
@@ -25,9 +26,13 @@ export default {
   },
   computed: {
     filteredGames() {
-      return this.games.filter((game) =>
-        game.name.toLowerCase().includes(this.input.toLowerCase())
-      );
+      const fuse = new Fuse(this.games, {
+        distance: 50,
+        threshold: 0.5,
+        keys: ['name']
+      });
+      const results = fuse.search(this.input.toLowerCase());
+      return results.map(result => result.item);
     }
   },
   methods: {
