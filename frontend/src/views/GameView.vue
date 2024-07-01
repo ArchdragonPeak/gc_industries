@@ -26,6 +26,7 @@
       <div class="comments">
         <div class="comments-text">
           <h2 style="text-align: center">Kommentare</h2>
+          <WriteCommentItem></WriteCommentItem>
           <CommentItem></CommentItem>
           <CommentItem></CommentItem>
           <CommentItem></CommentItem>
@@ -39,11 +40,14 @@
 </template>
 
 <script>
-import CommentItem from '@/components/CommentItem.vue'
+import CommentItem from '@/components/CommentItem.vue';
+import WriteCommentItem from '@/components/WriteCommentItem.vue';
+
 export default{
     name: 'GameView',
     components: {
-      CommentItem
+      CommentItem,
+      WriteCommentItem
     },
     data() {
       return {
