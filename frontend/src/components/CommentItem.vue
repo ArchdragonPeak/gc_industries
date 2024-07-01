@@ -6,10 +6,10 @@
                     <img alt="Pic" src="../../public/img/gigachad_logo.png"  height="32" width="32">
                 </div>
                 <div class="profile-item">
-                    <p><b>LinusTechTips</b></p>
+                    <p><b>{{ username }}</b></p>
                 </div>
                 <div class="profile-item" id="date">
-                    <p> 11.06.2024 </p>
+                    <p> {{ date }} </p>
                 </div>
             </div>
             
@@ -17,7 +17,9 @@
 
         <div class="body">
             <div class="text-wrapper">
-                <p class="text"> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. </p>
+                <!-- <p class="text"> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. </p>
+                -->
+                <p class="text"> {{ message }}</p>
             </div>
         </div>
     </div>
@@ -29,7 +31,9 @@
         props: {
                 profilepic: String,
                 username: String,
-                date: String
+                date: Date,
+                message: String,
+                userID: String
         }
     }
 </script>

@@ -18,7 +18,7 @@
         <div class="description-text">
           <p><b>Beschreibung:</b></p>
           <p>Dies ist eine Testbeschreibung. Hier wird zum Beispiel eine kleine Einführunggeschichte
-            erzählt. Der Name des Spiels gennant und solche lustigen Sachen.
+            erzählt. Der Name des Spiels gennant und solche lustigen Sachen.  
           </p>
         </div>
       </div>
@@ -27,12 +27,14 @@
         <div class="comments-text">
           <h2 style="text-align: center">Kommentare</h2>
           <WriteCommentItem></WriteCommentItem>
-          <CommentItem></CommentItem>
-          <CommentItem></CommentItem>
-          <CommentItem></CommentItem>
-          <CommentItem></CommentItem>
-          <CommentItem></CommentItem>
-
+          <CommentItem v-for="comment in comments"
+            :key="comment.commentID"
+            :userID="comment.userID"
+            :username="comment.username"
+            :date="comment.date"
+            :message="comment.message"
+            >
+          </CommentItem>
         </div>
       </div>
     </div>
@@ -49,12 +51,37 @@ export default{
       CommentItem,
       WriteCommentItem
     },
+    props: {
+    },
     data() {
       return {
         game: {
           type: {},
-          required: true
-        }
+          required: true,
+        },
+        comments: [
+        {
+          commentID: 1,
+          userID: "2",
+          username: "Linux",
+          date: new Date(),
+          message: "Wow das ist ein tolles Spiel ich bin süchtig"
+        },
+        {
+          commentID: 2,
+          userID: "2",
+          username: "Kevin",
+          date: "",
+          message: "Ich sterbe die ganze Zeit menno"
+        },
+        {
+          commentID: 3,
+          userID: "5",
+          username: "Luan",
+          date: "",
+          message: "Nachricht3"
+        },
+        ]
       };
     },
     computed: {

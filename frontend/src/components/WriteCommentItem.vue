@@ -3,55 +3,66 @@
         <div class="head">
             <div class="profile">
                 <div class="profile-item">
-                    <img alt="Pic" src="../../public/img/gigachad_logo.png"  height="32" width="32">
+                    <img :src="profilepic" alt="Profilbild" height="32" width="32">
                 </div>
                 <div class="profile-item">
-                    <p><b>Profilname</b></p>
+                    <p><b>{{ username }}</b></p>
                 </div>
                 <div class="profile-item" id="date">
-                    <p> {{ this.datum }} </p>
+                    <p> {{ datum }} </p>
                 </div>
             </div>
-            
         </div>
 
         <div class="body">
             <div class="text-wrapper">
-                <textarea ref="message" class="search" type="text" v-model="input" placeholder="Kommentar schreiben" />
-                <button @click="message.value = ''">abbrechen</button>
-                <button @click='sendMessage(); message.value = ""'>Senden</button>
-                
+                <textarea ref="message" class="search" v-model="input" placeholder="Kommentar schreiben"></textarea>
+                <button @click="cancelMessage">abbrechen</button>
+                <button @click="sendMessage">Senden</button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import { ref } from "vue";
-    export default {
-        setup() {
-            const message = ref(null)
-            return {
-                message
+import { ref } from "vue";
+export default {
+    setup() {
+        const message = ref("");
+        return { message };
+    },
+    name: 'WriteCommentItem',
+    props: {
+        profilepic: String,
+        username: String,
+        date: Date,
+    },
+    data() {
+        return {
+            input: '',
+            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" },
+        }
+    },
+    computed: {
+        datum() {
+            return new Date().toLocaleDateString("de-DE", this.dateOptions);
+        }
+    },
+    methods: {
+        sendMessage() {
+            if (this.input.trim()) {
+                // API Call to send the message
+                console.log("Nachricht gesendet: ", this.input);
+                this.input = ''; // Clear the input after sending
             }
         },
-        name:'WriteCommentItem',
-        props: {
-                profilepic: String,
-                username: String,
-                date: Date,
-        },
-        data() {
-            return {
-                datum: new Date().toLocaleDateString("de-DE", {year:"numeric", month:"2-digit", day:"2-digit",hour:"2-digit", minute:"2-digit",second:"2-digit"}) }
-        },
-        methods: {
-            sendMessage(){
-                alert("Nachricht gesendet!")
-            }
+        cancelMessage() {
+            this.input = '';
         }
     }
+}
 </script>
+
 
 <style scoped>
 .search {
