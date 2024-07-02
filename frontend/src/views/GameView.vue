@@ -27,7 +27,7 @@
         <div class="comments-text">
           <h2 style="text-align: center">Kommentare</h2>
           <WriteCommentItem></WriteCommentItem>
-          <CommentItem v-for="comment in comments"
+          <CommentItem v-for="comment in comments.slice().reverse()"
             :key="comment.commentID"
             :userID="comment.userID"
             :username="comment.username"
@@ -64,22 +64,22 @@ export default{
           commentID: 1,
           userID: "2",
           username: "Linux",
-          date: new Date(),
+          date: new Date(Date.parse("2024-02-05:11:44")).toLocaleString("de-DE"),
           message: "Wow das ist ein tolles Spiel ich bin süchtig"
         },
         {
           commentID: 2,
           userID: "2",
           username: "Kevin",
-          date: "",
+          date: new Date(Date.parse("2024-02-06:18:12")).toLocaleString("de-DE"),
           message: "Ich sterbe die ganze Zeit menno"
         },
         {
           commentID: 3,
           userID: "5",
           username: "Luan",
-          date: "",
-          message: "Nachricht3"
+          date: new Date(Date.parse("2024-02-06:22:51")).toLocaleString("de-DE"),
+          message: "Wer das ließt ist krass"
         },
         ]
       };
@@ -102,7 +102,18 @@ export default{
         } catch (error) {
           console.error('Es gab ein Problem mit der Fetch-Operation:', error);
           }
-        }
+        },
+      addComment(userID, username, message) {
+        this.comments.push(
+            {
+            commentID: (this.comments.length+1),
+            userID: userID,
+            username: username,
+            date: new Date().toLocaleString("de-DE"),
+            message: message
+            }
+        )
+      }
     },
     mounted() {
       this.fetchGame();

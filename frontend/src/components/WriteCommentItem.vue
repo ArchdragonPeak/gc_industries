@@ -52,6 +52,7 @@ export default {
         sendMessage() {
             if (this.input.trim()) {
                 // API Call to send the message
+                this.$parent.addComment(this.userID, "TestBenutzer", this.input); //userID, username, message
                 console.log("Nachricht gesendet: ", this.input);
                 this.input = ''; // Clear the input after sending
             }
