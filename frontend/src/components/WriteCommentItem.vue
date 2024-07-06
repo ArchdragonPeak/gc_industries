@@ -9,7 +9,7 @@
                     <p><b>{{ username }}</b></p>
                 </div>
                 <div class="profile-item" id="date">
-                    <p> {{ datum }} </p>
+                    <p>{{ datum }}</p>
                 </div>
             </div>
         </div>
@@ -33,13 +33,16 @@ export default {
     props: {
         profilepic: String,
         username: String,
-        userID: Number,
+        userID: {
+            type: Number,
+            required: true
+        }
     },
     data() {
         return {
             input: '',
-            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" },
-        }
+            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }
+        };
     },
     computed: {
         datum() {
@@ -50,15 +53,16 @@ export default {
         async sendMessage() {
             if (this.input.trim()) {
                 try {
-                    const response = await fetch(`http://localhost:3000/games/${this.$parent.gameID}/comments`, {
+                    const response = await fetch(`http://localhost:3000/comments`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
+                            gameID: this.$parent.gameID,
                             userID: this.userID,
-                            text: this.input,
-                            date: new Date().toISOString() // Set the current date in ISO format
+                            date: new Date().toISOString(),
+                            text: this.input
                         })
                     });
                     if (!response.ok) {
@@ -75,7 +79,7 @@ export default {
             this.input = '';
         }
     }
-}
+};
 </script>
 
 <style scoped>

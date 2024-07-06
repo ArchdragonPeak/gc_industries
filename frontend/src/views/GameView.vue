@@ -26,7 +26,7 @@
     <div class="comments">
       <div class="comments-text">
         <h2 style="text-align: center">Kommentare</h2>
-        <WriteCommentItem @add-comment="fetchComments"></WriteCommentItem>
+        <WriteCommentItem :userID="currentUserID" @add-comment="fetchComments"></WriteCommentItem>
         <CommentItem v-for="comment in comments"
           :key="comment.commentID"
           :comment="comment"
@@ -43,7 +43,7 @@
 import CommentItem from '@/components/CommentItem.vue';
 import WriteCommentItem from '@/components/WriteCommentItem.vue';
 
-export default{
+export default {
   name: 'GameView',
   components: {
     CommentItem,
@@ -51,11 +51,9 @@ export default{
   },
   data() {
     return {
-      game: {
-        type: Object,
-        required: true,
-      },
-      comments: []
+      game: {},
+      comments: [],
+      currentUserID: 1 // Placeholder
     };
   },
   computed: {
@@ -71,16 +69,16 @@ export default{
           throw new Error('Netzwerkantwort war nicht ok');
         }
         const data = await response.json();
-        this.game = data;
+        this.game = data.game; // Adjusted to access the game part of the response
         console.log(this.game);
       } catch (error) {
         console.error('Spiel konnte nicht abgerufen werden. Fetch-Operation:', error);
-        }
+      }
     },
     async fetchComments() {
       try {
-        const response = await fetch(`http://localhost:3000/games/${this.gameID}/comments`);
-        if(!response.ok) {
+        const response = await fetch(`http://localhost:3000/comments?gameID=${this.gameID}`);
+        if (!response.ok) {
           throw new Error('Netzwerkantwort war nicht ok');
         }
         const data = await response.json();
@@ -88,27 +86,6 @@ export default{
         console.log(this.comments);
       } catch (error) {
         console.error('Kommentare konnten nicht abgerufen werden. Fetch-Operation:', error);
-      }
-    },
-    async addComment(userID, message) {
-      try {
-        const response = await fetch(`http://localhost:3000/games/${this.gameID}/comments`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            userID: userID,
-            date: new Date().toLocaleString("de-DE"),
-            text: message
-          })
-        });
-        if (!response.ok) {
-          throw new Error('Netzwerkantwort war nicht ok');
-        }
-        this.fetchComments(); // Refresh comments after adding a new one
-      } catch (error) {
-        console.error('Es gab ein Problem mit der Fetch-Operation:', error);
       }
     }
   },

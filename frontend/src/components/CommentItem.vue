@@ -3,13 +3,13 @@
         <div class="head">
             <div class="profile">
                 <div class="profile-item">
-                    <img :src="comment.userID?.profilepicture || '../img/gigachad_logo.png'" alt="Profilbild" height="32" width="32">
+                    <img :src="comment.userID.profilepicture || '../img/gigachad_logo.png'" alt="Profilbild" height="32" width="32">
                 </div>
                 <div class="profile-item">
-                    <p><b>{{ comment.userID?.username || 'Unbekannt' }}</b></p>
+                    <p><b>{{ comment.userID.username || 'Unbekannt' }}</b></p>
                 </div>
                 <div class="profile-item" id="date">
-                    <p> {{ prettierDate }} </p>
+                    <p>{{ prettierDate }}</p>
                 </div>
                 <div class="deleteButton-wrapper" v-if="true">
                     <button class="deleteButton" @click="deleteComment()">löschen</button>
@@ -19,7 +19,7 @@
 
         <div class="body">
             <div class="text-wrapper">
-                <p class="text"> {{ comment.text }}</p>
+                <p class="text">{{ comment.text }}</p>
             </div>
         </div>
     </div>
@@ -35,12 +35,12 @@ export default {
     data() {
         return {
             dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }
-        }
+        };
     },
     methods: {
         async deleteComment() {
             try {
-                const response = await fetch(`http://localhost:3000/games/${this.$parent.gameID}/comments/${this.comment.commentID}`, {
+                const response = await fetch(`http://localhost:3000/comments/${this.comment.commentID}`, {
                     method: 'DELETE'
                 });
                 if (!response.ok) {
@@ -61,10 +61,11 @@ export default {
             return date.toLocaleDateString("de-DE", this.dateOptions);
         }
     }
-}
+};
 </script>
 
 <style scoped>
+
 .deleteButton-wrapper {
     float: right;
     font-size: 12px;
