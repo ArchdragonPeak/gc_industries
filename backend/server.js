@@ -136,15 +136,18 @@ app.delete('/games/:id/comments/:commentId', async (req, res) => {
     try {
         const game = await GameModel.findOne({ gameID: id });
         if (game) {
-            const comment = game.comments.id(commentId);
-            if (comment) {
-                comment.remove();
+            console.log(`Found game with ID ${id}. Looking for comment with ID ${commentId}.`);
+            const commentIndex = game.comments.findIndex(c => c.commentID === parseInt(commentId));
+            if (commentIndex !== -1) {
+                game.comments.splice(commentIndex, 1); // Remove the comment from the array
                 const updatedGame = await game.save();
                 res.json(updatedGame);
             } else {
+                console.error(`Comment with ID ${commentId} not found in game with ID ${id}.`);
                 res.status(404).send('Comment not found');
             }
         } else {
+            console.error(`Game with ID ${id} not found.`);
             res.status(404).send('Game not found');
         }
     } catch (error) {
