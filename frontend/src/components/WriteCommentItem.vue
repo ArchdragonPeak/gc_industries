@@ -41,7 +41,7 @@ export default {
     data() {
         return {
             input: '',
-            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }
+            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }
         };
     },
     computed: {
@@ -61,7 +61,7 @@ export default {
                         body: JSON.stringify({
                             gameID: this.$parent.gameID,
                             userID: this.userID,
-                            date: new Date().toISOString(),
+                            date: new Date(), // Direktes Datum verwenden
                             text: this.input
                         })
                     });

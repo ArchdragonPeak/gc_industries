@@ -3,16 +3,16 @@
         <div class="head">
             <div class="profile">
                 <div class="profile-item">
-                    <img :src="comment.userID.profilepicture || '../img/gigachad_logo.png'" alt="Profilbild" height="32" width="32">
+                    <img :src="comment.user?.profilepicture || '../img/gigachad_logo.png'" alt="Profilbild" height="32" width="32">
                 </div>
                 <div class="profile-item">
-                    <p><b>{{ comment.userID.username || 'Unbekannt' }}</b></p>
+                    <p><b>{{ comment.user?.username || 'Unbekannt' }}</b></p>
                 </div>
                 <div class="profile-item" id="date">
                     <p>{{ prettierDate }}</p>
                 </div>
                 <div class="deleteButton-wrapper" v-if="true">
-                    <button class="deleteButton" @click="deleteComment()">löschen</button>
+                    <button class="deleteButton" @click="deleteComment">löschen</button>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@ export default {
     name: 'CommentItem',
     props: {
         comment: Object,
-        isAdmin: Boolean
+        isAdmin: true
     },
     data() {
         return {

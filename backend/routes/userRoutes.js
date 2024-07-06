@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 
 // GET /users/:id
 router.get('/:id', async (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     try {
         const user = await UserModel.findOne({ userID: id });
         if (user) {

@@ -53,7 +53,7 @@ export default {
     return {
       game: {},
       comments: [],
-      currentUserID: 1 // Placeholder
+      currentUserID: 2 // Placeholder
     };
   },
   computed: {
@@ -69,7 +69,7 @@ export default {
           throw new Error('Netzwerkantwort war nicht ok');
         }
         const data = await response.json();
-        this.game = data.game; // Adjusted to access the game part of the response
+        this.game = data; // Adjusted to access the game part of the response
         console.log(this.game);
       } catch (error) {
         console.error('Spiel konnte nicht abgerufen werden. Fetch-Operation:', error);

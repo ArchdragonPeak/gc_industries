@@ -1,17 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const CommentModel = require('../models/CommentSchema');
+const UserModel = require('../models/UserSchema');
 
 // GET /comments
 router.get('/', async (req, res) => {
     try {
-        const comments = await CommentModel.find().populate({
-            path: 'userID',
-            model: 'UserModel',
-            select: 'username profilepicture',
-            match: { userID: { $exists: true } } // Ensure only valid user references are included
+        const comments = await CommentModel.find();
+        console.log("Comments found: ", comments); // Debug-Log
+
+        const populatedComments = await CommentModel.find().populate({
+            path: 'user',
+            select: 'username profilepicture'
         });
-        res.json(comments);
+        console.log("Populated comments: ", populatedComments); // Debug-Log
+        
+        res.json(populatedComments);
     } catch (error) {
         console.error('Error retrieving comments:', error);
         res.status(500).send('Error retrieving comments');
@@ -20,13 +24,12 @@ router.get('/', async (req, res) => {
 
 // GET /comments/:id
 router.get('/:id', async (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     try {
         const comment = await CommentModel.findOne({ commentID: id }).populate({
             path: 'userID',
             model: 'UserModel',
-            select: 'username profilepicture',
-            match: { userID: { $exists: true } } // Ensure only valid user references are included
+            select: 'username profilepicture'
         });
         if (comment) {
             res.json(comment);
@@ -53,7 +56,7 @@ router.post('/', async (req, res) => {
 
 // PUT /comments/:id
 router.put('/:id', async (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     try {
         const updatedComment = await CommentModel.findOneAndUpdate({ commentID: id }, req.body, { new: true });
         if (updatedComment) {
@@ -69,7 +72,7 @@ router.put('/:id', async (req, res) => {
 
 // DELETE /comments/:id
 router.delete('/:id', async (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     try {
         const deletedComment = await CommentModel.findOneAndDelete({ commentID: id });
         if (deletedComment) {

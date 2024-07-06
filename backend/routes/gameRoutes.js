@@ -16,11 +16,14 @@ router.get('/', async (req, res) => {
 
 // GET /games/:id
 router.get('/:id', async (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     try {
         const game = await GameModel.findOne({ gameID: id });
         if (game) {
-            const comments = await CommentModel.find({ gameID: id }).populate('userID', 'username profilepicture');
+            const comments = await CommentModel.find({ gameID: id }).populate({
+                path: 'user',
+                select: 'username profilepicture'
+            });
             res.json({ game, comments });
         } else {
             res.status(404).send('Game not found');
@@ -45,7 +48,7 @@ router.post('/', async (req, res) => {
 
 // PUT /games/:id
 router.put('/:id', async (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     try {
         const updatedGame = await GameModel.findOneAndUpdate({ gameID: id }, req.body, { new: true });
         if (updatedGame) {
@@ -61,7 +64,7 @@ router.put('/:id', async (req, res) => {
 
 // DELETE /games/:id
 router.delete('/:id', async (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     try {
         const deletedGame = await GameModel.findOneAndDelete({ gameID: id });
         if (deletedGame) {

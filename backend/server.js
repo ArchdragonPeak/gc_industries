@@ -31,10 +31,28 @@ app.use('/games', gameRoutes);
 app.use('/comments', commentRoutes);
 app.use('/users', userRoutes);
 
+const UserModel = require('./models/UserSchema');
+
+async function createExampleUser() {
+    try {
+        const user = await UserModel.findOne({ username: 'TestUser' });
+        if (!user) {
+            const newUser = new UserModel({ username: 'TestUser', profilepicture: 'path/to/picture' });
+            await newUser.save();
+            console.log('Example user created:', newUser);
+        } else {
+            console.log('Example user already exists:', user);
+        }
+    } catch (error) {
+        console.error('Error creating example user:', error);
+    }
+}
+
 async function run() {
     try {
         await mongoose.connect(uri, clientOptions);
         console.log('Connected to MongoDB!');
+        await createExampleUser();
         app.listen(port, () => {
             console.log(`Server running at http://localhost:${port}`);
         });
