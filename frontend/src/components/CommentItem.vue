@@ -9,13 +9,12 @@
                     <p><b>{{ comment.userID?.username || 'Unbekannt' }}</b></p>
                 </div>
                 <div class="profile-item" id="date">
-                    <p> {{ comment.date }} </p>
+                    <p> {{ prettierDate }} </p>
                 </div>
                 <div class="deleteButton-wrapper" v-if="true">
                     <button class="deleteButton" @click="deleteComment()">löschen</button>
                 </div>
             </div>
-            
         </div>
 
         <div class="body">
@@ -33,13 +32,13 @@ export default {
         comment: Object,
         isAdmin: Boolean
     },
-    data () {
+    data() {
         return {
-            publicPath: process.env.BASE_URL
+            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }
         }
     },
     methods: {
-        async deleteComment(){
+        async deleteComment() {
             try {
                 const response = await fetch(`http://localhost:3000/games/${this.$parent.gameID}/comments/${this.comment.commentID}`, {
                     method: 'DELETE'
@@ -51,6 +50,15 @@ export default {
             } catch (error) {
                 console.error('Es gab ein Problem mit der Fetch-Operation:', error);
             }
+        }
+    },
+    computed: {
+        prettierDate() {
+            if (!this.comment.date) {
+                return 'Datum nicht verfügbar';
+            }
+            const date = new Date(this.comment.date);
+            return date.toLocaleDateString("de-DE", this.dateOptions);
         }
     }
 }

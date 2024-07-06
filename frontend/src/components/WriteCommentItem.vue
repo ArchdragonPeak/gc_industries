@@ -34,7 +34,6 @@ export default {
         profilepic: String,
         username: String,
         userID: Number,
-        date: Date,
     },
     data() {
         return {
@@ -59,7 +58,7 @@ export default {
                         body: JSON.stringify({
                             userID: this.userID,
                             text: this.input,
-                            date: this.date
+                            date: new Date().toISOString() // Set the current date in ISO format
                         })
                     });
                     if (!response.ok) {
