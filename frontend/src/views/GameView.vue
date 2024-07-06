@@ -17,16 +17,14 @@
     <div class="description">
       <div class="description-text">
         <p><b>Beschreibung:</b></p>
-        <p>Dies ist eine Testbeschreibung. Hier wird zum Beispiel eine kleine Einführunggeschichte
-          erzählt. Der Name des Spiels gennant und solche lustigen Sachen.  
-        </p>
+        <p>{{ game.description }}</p>
       </div>
     </div>
     <hr style="width: 80%">
     <div class="comments">
       <div class="comments-text">
         <h2 style="text-align: center">Kommentare</h2>
-        <WriteCommentItem :userID="currentUserID" @add-comment="fetchComments"></WriteCommentItem>
+        <WriteCommentItem @add-comment="fetchComments"></WriteCommentItem>
         <CommentItem v-for="comment in comments"
           :key="comment.commentID"
           :comment="comment"
@@ -51,9 +49,11 @@ export default {
   },
   data() {
     return {
-      game: {},
-      comments: [],
-      currentUserID: 2 // Placeholder
+      game: {
+        type: Object,
+        required: true,
+      },
+      comments: []
     };
   },
   computed: {
@@ -69,7 +69,7 @@ export default {
           throw new Error('Netzwerkantwort war nicht ok');
         }
         const data = await response.json();
-        this.game = data; // Adjusted to access the game part of the response
+        this.game = data.game;
         console.log(this.game);
       } catch (error) {
         console.error('Spiel konnte nicht abgerufen werden. Fetch-Operation:', error);
@@ -77,7 +77,7 @@ export default {
     },
     async fetchComments() {
       try {
-        const response = await fetch(`http://localhost:3000/comments?gameID=${this.gameID}`);
+        const response = await fetch(`http://localhost:3000/comments/${this.gameID}`);
         if (!response.ok) {
           throw new Error('Netzwerkantwort war nicht ok');
         }
@@ -86,6 +86,28 @@ export default {
         console.log(this.comments);
       } catch (error) {
         console.error('Kommentare konnten nicht abgerufen werden. Fetch-Operation:', error);
+      }
+    },
+    async addComment(userID, message) {
+      try {
+        const response = await fetch(`http://localhost:3000/comments`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            gameID: this.gameID,
+            userID: userID,
+            date: new Date(),
+            text: message
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Netzwerkantwort war nicht ok');
+        }
+        this.fetchComments(); // Refresh comments after adding a new one
+      } catch (error) {
+        console.error('Es gab ein Problem mit der Fetch-Operation:', error);
       }
     }
   },

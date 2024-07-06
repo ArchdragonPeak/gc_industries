@@ -3,19 +3,19 @@ const router = express.Router();
 const CommentModel = require('../models/CommentSchema');
 const UserModel = require('../models/UserSchema');
 
-// GET /comments
-router.get('/', async (req, res) => {
+// GET /comments/:gameID
+router.get('/:gameID', async (req, res) => {
+    const gameID = parseInt(req.params.gameID);
     try {
-        const comments = await CommentModel.find();
-        console.log("Comments found: ", comments); // Debug-Log
-
-        const populatedComments = await CommentModel.find().populate({
+        const comments = await CommentModel.find({ gameID }).populate({
             path: 'user',
             select: 'username profilepicture'
         });
-        console.log("Populated comments: ", populatedComments); // Debug-Log
-        
-        res.json(populatedComments);
+        console.log("Comments found: ", comments); // Debug-Log
+        if (comments.length === 0) {
+            return res.status(404).send('Comments not found');
+        }
+        res.json(comments);
     } catch (error) {
         console.error('Error retrieving comments:', error);
         res.status(500).send('Error retrieving comments');
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET /comments/:id
-router.get('/:id', async (req, res) => {
+router.get('/comment/:id', async (req, res) => {
     const id = parseInt(req.params.id);
     try {
         const comment = await CommentModel.findOne({ commentID: id }).populate({
