@@ -17,24 +17,23 @@
         <div class="body">
             <div class="text-wrapper">
                 <textarea ref="message" class="search" v-model="input" placeholder="Kommentar schreiben"></textarea>
-                <button @click="cancelMessage">abbrechen</button>
-                <button @click="sendMessage">Senden</button>
             </div>
+        </div>
+
+        <div class="comment-buttons">
+            <button class="button" @click="cancelMessage">abbrechen</button>
+            <button class="button" @click="sendMessage">absenden</button>
         </div>
     </div>
 </template>
 
 <script>
-import { ref } from "vue";
 export default {
-    setup() {
-        const message = ref("");
-        return { message };
-    },
     name: 'WriteCommentItem',
     props: {
         profilepic: String,
         username: String,
+        userID: Number,
         date: Date,
     },
     data() {
@@ -49,12 +48,28 @@ export default {
         }
     },
     methods: {
-        sendMessage() {
+        async sendMessage() {
             if (this.input.trim()) {
-                // API Call to send the message
-                this.$parent.addComment(this.userID, "TestBenutzer", this.input); //userID, username, message
-                console.log("Nachricht gesendet: ", this.input);
-                this.input = ''; // Clear the input after sending
+                try {
+                    const response = await fetch(`http://localhost:3000/games/${this.$parent.gameID}/comments`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            userID: this.userID,
+                            text: this.input,
+                            date: this.date
+                        })
+                    });
+                    if (!response.ok) {
+                        throw new Error('Netzwerkantwort war nicht ok');
+                    }
+                    this.$emit('add-comment'); // Emit an event to refresh comments in the parent component
+                    this.input = ''; // Clear the input after sending
+                } catch (error) {
+                    console.error('Es gab ein Problem mit der Fetch-Operation:', error);
+                }
             }
         },
         cancelMessage() {
@@ -64,8 +79,27 @@ export default {
 }
 </script>
 
-
 <style scoped>
+.comment-buttons {
+    text-align: right;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.button {
+    padding: 3px 5px 3px 5px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 16px;
+    outline: none;
+    border: 1px double;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: sans-serif;
+}
+.button:active {
+    background-color: darkgray;
+}
 .search {
   background-color: rgb(221, 221, 221);
   height: 72px;
@@ -107,7 +141,7 @@ img {
     margin: 2px 2px 0px 2px;
 }
 .text-wrapper {
-    margin: 0px 12px 12px 12px;
+    margin: 0px 12px 0px 12px;
     font-size: 16px;
     font-family: monospace;
 }

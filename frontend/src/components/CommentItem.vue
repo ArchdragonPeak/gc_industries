@@ -3,13 +3,16 @@
         <div class="head">
             <div class="profile">
                 <div class="profile-item">
-                    <img alt="Pic" src="../../public/img/gigachad_logo.png"  height="32" width="32">
+                    <img :src="comment.userID?.profilepicture || '../img/gigachad_logo.png'" alt="Profilbild" height="32" width="32">
                 </div>
                 <div class="profile-item">
-                    <p><b>{{ username }}</b></p>
+                    <p><b>{{ comment.userID?.username || 'Unbekannt' }}</b></p>
                 </div>
                 <div class="profile-item" id="date">
-                    <p> {{ date }} </p>
+                    <p> {{ comment.date }} </p>
+                </div>
+                <div class="deleteButton-wrapper" v-if="true">
+                    <button class="deleteButton" @click="deleteComment()">löschen</button>
                 </div>
             </div>
             
@@ -17,26 +20,57 @@
 
         <div class="body">
             <div class="text-wrapper">
-                <p class="text"> {{ message }}</p>
+                <p class="text"> {{ comment.text }}</p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    export default {
-        name:'CommentItem',
-        props: {
-                profilepic: String,
-                username: String,
-                date: Date,
-                message: String,
-                userID: String
+export default {
+    name: 'CommentItem',
+    props: {
+        comment: Object,
+        isAdmin: Boolean
+    },
+    data () {
+        return {
+            publicPath: process.env.BASE_URL
+        }
+    },
+    methods: {
+        async deleteComment(){
+            try {
+                const response = await fetch(`http://localhost:3000/games/${this.$parent.gameID}/comments/${this.comment.commentID}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) {
+                    throw new Error('Netzwerkantwort war nicht ok');
+                }
+                this.$emit('delete-comment'); // Emit an event to refresh comments in the parent component
+            } catch (error) {
+                console.error('Es gab ein Problem mit der Fetch-Operation:', error);
+            }
         }
     }
+}
 </script>
 
 <style scoped>
+.deleteButton-wrapper {
+    float: right;
+    font-size: 12px;
+    font-family: sans-serif;
+}
+.deleteButton {
+    font-size: 16px;
+    border-radius: 5px;
+    border-width: 1px;
+    margin: 5px 5px 5px 5px;
+}
+.deleteButton:active {
+    background-color: darkgray;
+}
 #date {
     color: gray;
     padding-left: 1%;

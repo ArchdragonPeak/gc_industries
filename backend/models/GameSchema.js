@@ -16,13 +16,27 @@ const clientOptions = {
     }
 };
 
+// Define the CommentsSchema
+const CommentsSchema = new mongoose.Schema({
+    commentID: Number,
+    userID: {
+        type: Number,
+        ref: 'UserModel'
+    },
+    date: Date,
+    text: String
+});
+
+CommentsSchema.plugin(AutoIncrement, { inc_field: 'commentID' });
+
+// Define the GameSchema and embed CommentsSchema
 const GameSchema = new mongoose.Schema({
     gameID: Number,
     name: String,
     gamelogo: String,
     tags: [String],
     ratings: [Number],
-    comments: [String]
+    comments: [CommentsSchema] // Embedding CommentsSchema
 });
 
 GameSchema.plugin(AutoIncrement, { inc_field: 'gameID' });
