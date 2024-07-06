@@ -17,6 +17,7 @@ app.get('/games', async (req, res) => {
         const games = await GameModel.find();
         res.json(games);
     } catch (error) {
+        console.error('Error retrieving games:', error);
         res.status(500).send('Error retrieving games');
     }
 });
@@ -37,8 +38,8 @@ app.get('/games/:id', async (req, res) => {
             res.status(404).send({ message: 'Game not found' });
         }
     } catch (error) {
+        console.error('Error retrieving game:', error);
         res.status(500).send('Error retrieving game');
-        console.error(error);
     }
 });
 
@@ -49,6 +50,7 @@ app.post('/games', async (req, res) => {
         const savedGame = await game.save();
         res.status(201).send(savedGame);
     } catch (error) {
+        console.error('Error saving game:', error);
         res.status(500).json(error);
     }
 });
@@ -65,6 +67,7 @@ app.put('/games/:id', async (req, res) => {
             res.status(404).send('Game not found');
         }
     } catch (error) {
+        console.error('Error updating game:', error);
         res.status(500).send('Error updating game');
     }
 });
@@ -81,6 +84,7 @@ app.delete('/games/:id', async (req, res) => {
             res.status(404).send('Game not found');
         }
     } catch (error) {
+        console.error('Error deleting game:', error);
         res.status(500).send('Error deleting game');
     }
 });
@@ -101,6 +105,7 @@ app.get('/games/:id/comments', async (req, res) => {
             res.status(404).send('Game not found');
         }
     } catch (error) {
+        console.error('Error retrieving comments:', error);
         res.status(500).send('Error retrieving comments');
     }
 });
@@ -119,6 +124,7 @@ app.post('/games/:id/comments', async (req, res) => {
             res.status(404).send('Game not found');
         }
     } catch (error) {
+        console.error('Error adding comment:', error);
         res.status(500).json(error);
     }
 });
@@ -130,13 +136,19 @@ app.delete('/games/:id/comments/:commentId', async (req, res) => {
     try {
         const game = await GameModel.findOne({ gameID: id });
         if (game) {
-            game.comments.id(commentId).remove();
-            const updatedGame = await game.save();
-            res.json(updatedGame);
+            const comment = game.comments.id(commentId);
+            if (comment) {
+                comment.remove();
+                const updatedGame = await game.save();
+                res.json(updatedGame);
+            } else {
+                res.status(404).send('Comment not found');
+            }
         } else {
             res.status(404).send('Game not found');
         }
     } catch (error) {
+        console.error('Error deleting comment:', error);
         res.status(500).send('Error deleting comment');
     }
 });
@@ -153,6 +165,7 @@ app.get('/users/:id', async (req, res) => {
             res.status(404).send({ message: 'User not found' });
         }
     } catch (error) {
+        console.error('Error retrieving user:', error);
         res.status(500).send('Error retrieving user');
     }
 });
@@ -164,6 +177,7 @@ app.post('/users', async (req, res) => {
         const savedUser = await user.save();
         res.status(201).send(savedUser);
     } catch (error) {
+        console.error('Error saving user:', error);
         res.status(500).json(error);
     }
 });
