@@ -12,16 +12,31 @@
         <router-link to="/profile">Profil</router-link>
       </div>
       <div class="profile">
-        <p>Profile.name</p>
+        <p @click="showLogin()">Profile.name</p>
+        <LoginModal v-if="loginVisible"></LoginModal>
         <img class="profilepicture" alt="PB" src="/img/profilepicture.png" heigth="64" width="64" @click="this.$router.push({path:'/profile'})">
       </div>
     </div>
 </template>
 
 <script>
-export default {
-    name: 'NavBar',
-}
+    import LoginModal from "@/components/LoginModal.vue";
+    export default {
+        name: 'NavBar',
+        components: {
+            LoginModal
+        },
+        data(){
+          return {
+            loginVisible: false
+          }
+        },
+        methods: {
+          showLogin(){
+            this.loginVisible = !this.loginVisible;
+          }
+        }
+    }
 </script>
 
 <style scoped>

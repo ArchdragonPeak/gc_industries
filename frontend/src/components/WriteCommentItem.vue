@@ -60,7 +60,7 @@ export default {
                         },
                         body: JSON.stringify({
                             gameID: this.$parent.gameID,
-                            userID: 2, //test
+                            userID: this.userID, //test
                             date: new Date(), // Direktes Datum verwenden
                             text: this.input
                         })

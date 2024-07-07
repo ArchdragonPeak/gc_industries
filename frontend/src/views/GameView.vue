@@ -24,7 +24,7 @@
     <div class="comments">
       <div class="comments-text">
         <h2 style="text-align: center">Kommentare</h2>
-        <WriteCommentItem @add-comment="fetchComments"></WriteCommentItem>
+        <WriteCommentItem @add-comment="fetchComments" userID=1></WriteCommentItem>
         <CommentItem v-for="comment in comments"
           :key="comment.commentID"
           :comment="comment"
