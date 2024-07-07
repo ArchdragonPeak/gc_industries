@@ -13,7 +13,9 @@
       </div>
       <div class="profile">
         <p @click="showLogin()">Profile.name</p>
-        <LoginModal v-if="loginVisible" @bgClicked="showLogin"></LoginModal>
+        <LoginModal v-if="loginVisible" @bgClicked="showLogin" @switchToRegister="switchModal"></LoginModal>
+        <RegisterModal v-if="registerVisible" @bgClicked="showRegister" @switchToRegister="switchModal"></RegisterModal>
+        
         <img class="profilepicture" alt="PB" src="/img/profilepicture.png" heigth="64" width="64" @click="this.$router.push({path:'/profile'})">
       </div>
     </div>
@@ -21,19 +23,34 @@
 
 <script>
     import LoginModal from "@/components/LoginModal.vue";
+import RegisterModal from "@/components/RegisterModal.vue";
     export default {
         name: 'NavBar',
         components: {
-            LoginModal
+            LoginModal,
+            RegisterModal
         },
         data(){
           return {
-            loginVisible: false
+            loginVisible: false,
+            registerVisible: false
           }
         },
         methods: {
           showLogin(){
             this.loginVisible = !this.loginVisible;
+          },
+          showRegister(){
+            this.registerVisible = !this.registerVisible;
+          },
+          switchModal(){
+            if (this.loginVisible) {
+              this.loginVisible = false;
+              this.registerVisible = true;
+            } else {
+              this.loginVisible = true;
+              this.registerVisible = false;
+            }
           }
         }
     }

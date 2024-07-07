@@ -1,32 +1,38 @@
 <template>
 <div class="bg" @click="$emit('bgClicked')"></div>
-    <div class="login-wrapper">
+    <div class="register-wrapper">
         <div>
-            <h1>Anmelden</h1>
+            <h1>Registrieren</h1>
         </div>
         <hr class="funny-bar">
         <div class="modal-row">
             <input placeholder="Benutzername" type="email"></input>
         </div>
         <div class="modal-row">
+            <input placeholder="E-Mail" type="email"></input>
+        </div>
+        <div class="modal-row">
             <input placeholder="Passwort" type="password"></input>
         </div>
         <div class="modal-row">
-            <button> Anmelden</button>
+            <button> Registrieren</button>
         </div>
-        <div>
-            <p>Noch nicht Registriert? <b @click="$emit('switchToRegister')"> Hier klicken!</b></p>
+        <div class="register-text">
+            <p>Schon Registriert? <b @click="$emit('switchToRegister')"> Hier klicken!</b></p>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: "LoginModal",
+    name: "RegisterModal"
 }
 </script>
 
 <style scoped>
+.register-text p{
+    margin-top: 1%;
+}
 .modal-row input{
   background-color: gainsboro;
   height: 50px;
@@ -51,16 +57,16 @@ export default {
     font-size: 24px;
     font-family: sans-serif;
 }
-.login-wrapper h1{
+.register-wrapper h1{
     color: white;
     text-shadow: 1px 1px 2px black;
 }
-.login-wrapper p{
+.register-wrapper p{
     color: white;
     text-shadow: 1px 1px 2px black;
     font-size: 18px;
 }
-.login-wrapper {
+.register-wrapper {
     font-size: 16px;
     height: 400px;
     width: 400px;
