@@ -1,19 +1,16 @@
 <template>
-<div class="bg" v-show="false"></div>
-<div class="login-wrapper">
-    <input placeholder="Benutzername" type="email"></input>
-    <input placeholder="Passwort" type="password"></input>
-    <button> Anmelden</button>
-    <button> Registrieren</button>
-</div>
+<div class="bg" @click="$emit('bgClicked')"></div>
+    <div class="login-wrapper">
+        <input placeholder="Benutzername" type="email"></input>
+        <input placeholder="Passwort" type="password"></input>
+        <button> Anmelden</button>
+        <button> Registrieren</button>
+    </div>
 </template>
 
 <script>
 export default {
-    name: "LoginModal",
-    methods: {
-
-    }
+    name: "LoginModal"
 }
 </script>
 

@@ -13,7 +13,7 @@
       </div>
       <div class="profile">
         <p @click="showLogin()">Profile.name</p>
-        <LoginModal v-if="loginVisible"></LoginModal>
+        <LoginModal v-if="loginVisible" @bgClicked="showLogin"></LoginModal>
         <img class="profilepicture" alt="PB" src="/img/profilepicture.png" heigth="64" width="64" @click="this.$router.push({path:'/profile'})">
       </div>
     </div>
