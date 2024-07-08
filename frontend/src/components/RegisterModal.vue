@@ -20,6 +20,12 @@
             <div class="register-text">
                 <p>Schon Registriert? <b @click="$emit('switchToRegister')"> Hier klicken!</b></p>
             </div>
+            <div v-if="registerStatus === 'error'" class="error-message">
+                {{ error }}
+            </div>
+            <div v-if="registerStatus === 'success'" class="success-message">
+                Erfolgreich registriert!
+            </div>
         </div>
 </template>
     
@@ -30,7 +36,9 @@
             return {
                 username: '',
                 email: '',
-                password: ''
+                password: '',
+                registerStatus: '',
+                error: ''
             };
         },
         methods: {
@@ -46,9 +54,13 @@
                     if (!response.ok) {
                         throw new Error('Registration failed');
                     }
+                    this.registerStatus = 'success',
+                    this.error = '';
                     this.$emit('register-success');
                     console.log("RegisterModal: Erfolgreich registriert", this.username, this.email, this.password)
                 } catch (error) {
+                    this.registerStatus = 'error';
+                    this.error = 'Die E-Mail wird schon verwendet oder die Eingabe ist inkorrekt';
                     console.error('Error during registration:', error);
                 }
             }
