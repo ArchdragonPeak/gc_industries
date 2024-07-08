@@ -13,11 +13,19 @@
                     <input class="game-input" type="number" id="gameID" v-model="gameID" style="display: none">
                     <div class="grid-item"> <label for="tags">Tags:</label> </div>
                     <div class="grid-item"> <input class="game-input" type="text" id="tags" v-model="tags" required> </div>
+
+                    <div class="grid-item"> <label for="name">Quelle:</label> </div>
+                    <div class="grid-item"> <input class="game-input" type="text" id="source" v-model="source" required> </div>
+
+                    <div class="grid-item"> <label for="name">Beschreibung:</label> </div>
+                    <div class="grid-item"> <textarea class="game-input" type="text" id="area" v-model="description" required> </textarea> </div>
+
+                    <div class="grid-item"> <label for="name">Kurzeinleitung:</label> </div>
+                    <div class="grid-item"> <textarea class="game-input" type="text" id="area" v-model="instruction" required> </textarea> </div>
+
                     <button type="submit">Spiel speichern</button>
                     
                 </form>
-                <div> <label for="gamelogo" class="upload-input">Logo Hochladen</label> </div>
-                <div> <input style="display: none;" type="file" accept="image/*" id="gamelogo" required> </div>
             </div>
         </div>
 
@@ -37,6 +45,9 @@ export default{
         gameID: '',
         tags: '',
         gamelogo: '',
+        source: '', // format: ../../games/canvas/pong.html
+        description: '',
+        instruction: '',
         showForm: true
       };
     },
@@ -55,18 +66,32 @@ export default{
         }
       },
       async postGame() {
-        try {
+          try {
+            const requestBody = {
+              gameID: this.gameID,
+              name: this.name,
+              gamelogo: this.gamelogo,
+              tags: this.tags,
+              instruction: this.instruction,
+              description: this.description,
+              source: this.source,
+              ishtml: true
+          };
+          console.log('Request Body:', requestBody);
+            
+
+          const token = localStorage.getItem('token');
           const response = await fetch('http://localhost:3000/games', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: this.name,
-              gameID: this.gameID,
-              tags: this.tags,
-              gamelogo: this.gamelogo
-            })
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(requestBody)
           });
           if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Server Error:', errorData);
             throw new Error('Netzwerkantwort war nicht ok');
           }
           const data = await response.json();
@@ -91,6 +116,19 @@ export default{
 </script>
 
 <style scoped>
+#area {
+  height: 120%;
+  background-color: rgb(221, 221, 221);
+  height: 72px;
+  border: 20px;
+  outline: none;
+  resize: vertical;
+  border: 1px dotted darkgray;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: monospace;   
+  margin-bottom: 12px;
+}
 .upload-input {
     border-radius: 10px;
     background-color: gainsboro;

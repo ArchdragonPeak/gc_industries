@@ -6,7 +6,11 @@ const GameSchema = new mongoose.Schema({
     name: String,
     gamelogo: String,
     tags: [String],
-    ratings: [Number]
+    ratings: [Number],
+    instruction: String,
+    description: String,
+    ishtml: Boolean,
+    source: String
 });
 
 GameSchema.plugin(AutoIncrement, { inc_field: 'gameID' });

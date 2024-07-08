@@ -7,6 +7,7 @@ const CommentSchema = new mongoose.Schema({
     userID: { type: Number, ref: 'UserModel', required: true },
     date: { type: Date, default: Date.now },
     text: { type: String, required: true }
+    // rating: Number
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 CommentSchema.virtual('user', {

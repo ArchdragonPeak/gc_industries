@@ -5,11 +5,11 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const UserSchema = new mongoose.Schema({
     userID: { type: Number, unique: true },
     username: String,
-    email: { type: String, unique: true, required: true },
+    email: { type: String, unique: true},
     password: { type: String, required: true },
-    profilepicture: String
-    // favgames: [Number] gameID?
-    // lastplayed: Number gameID?
+    profilepicture: String,
+    favgames: [Number]
+    
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 UserSchema.virtual('id').get(function() {

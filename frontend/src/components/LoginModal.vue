@@ -63,6 +63,7 @@ export default {
       } catch (error) {
         this.loginStatus = 'error';
         this.error = 'Passwort und/oder E-Mail sind falsch';
+        console.error("Error:", error);
       }
     }
   }

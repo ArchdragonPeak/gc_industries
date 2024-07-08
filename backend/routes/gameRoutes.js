@@ -21,11 +21,7 @@ router.get('/:id', async (req, res) => {
     try {
         const game = await GameModel.findOne({ gameID: id });
         if (game) {
-            const comments = await CommentModel.find({ gameID: id }).populate({
-                path: 'user',
-                select: 'username profilepicture'
-            });
-            res.json({ game, comments });
+            res.json( game );
         } else {
             res.status(404).send('Game not found');
         }
@@ -37,6 +33,7 @@ router.get('/:id', async (req, res) => {
 
 // POST /games - Admin Route, erfordert Authentifizierung
 router.post('/', authMiddleware, async (req, res) => {
+    console.log("Erhaltene Dates:", req.body);
     try {
         const game = new GameModel(req.body);
         const savedGame = await game.save();

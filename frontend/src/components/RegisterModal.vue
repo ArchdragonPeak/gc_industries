@@ -47,7 +47,7 @@
                         throw new Error('Registration failed');
                     }
                     this.$emit('register-success');
-                    console.log("RegisterModal: Erfolgreich registriert", username, email, password)
+                    console.log("RegisterModal: Erfolgreich registriert", this.username, this.email, this.password)
                 } catch (error) {
                     console.error('Error during registration:', error);
                 }
