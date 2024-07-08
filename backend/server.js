@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
 const passwordFilePath = path.join(__dirname, 'dbpassword.config');
 const pass = fs.readFileSync(passwordFilePath, 'utf8').trim();
@@ -26,10 +27,13 @@ app.use(bodyParser.json());
 const gameRoutes = require('./routes/gameRoutes');
 const commentRoutes = require('./routes/commentRoutes');
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes'); // Hinzufügen der Authentifizierungsrouten
+const authMiddleware = require('./middleware/authMiddleware');
 
-app.use('/games', gameRoutes);
-app.use('/comments', commentRoutes);
-app.use('/users', userRoutes);
+app.use('/auth', authRoutes); // Authentifizierungsrouten
+app.use('/games', gameRoutes); // Öffentliche Route
+app.use('/comments', commentRoutes); // Geschützte Route
+app.use('/users', authMiddleware, userRoutes);
 
 const UserModel = require('./models/UserSchema');
 

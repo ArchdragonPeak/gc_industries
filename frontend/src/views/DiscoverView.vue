@@ -2,11 +2,11 @@
   <h1 class="title">Entdecken</h1>
   
   <input class="search" type="text" v-model="input" placeholder="Spiel suchen..." />
-  <div class="item error" v-if="input && !filteredGames.length">
+  <div v-if="input && !filteredGames.length">
     <p id="no-game-found">Es wurde leider kein Spiel gefunden!</p>
   </div>
-  <TestGameList :games="filteredGames" listTitle="Suche" v-model="input" v-if="input && filteredGames.length"></TestGameList>
-  <TestGameList :games="games" listTitle="Angesagt"></TestGameList>
+  <TestGameList :games="filteredGames" listTitle="Suche" v-if="input && filteredGames.length"></TestGameList>
+  <TestGameList :games="games" listTitle="Angesagt" v-if="!input || !filteredGames.length"></TestGameList>
 </template>
 
 <script>
@@ -27,9 +27,9 @@ export default {
   computed: {
     filteredGames() {
       const fuse = new Fuse(this.games, {
-        distance: 50,
-        threshold: 0.5,
-        keys: ['name']
+        distance: 50, // Standard 100
+        threshold: 0.5, // Standard 0.6
+        keys: ['name'] // vielleicht Beschreibung hinzufügen
       });
       const results = fuse.search(this.input);
       return results.map(result => result.item);
@@ -44,7 +44,6 @@ export default {
         }
         const data = await response.json();
         this.games = data;
-        //console.log(this.games);
       } catch (error) {
         console.error('Es gab ein Problem mit der Fetch-Operation:', error);
       }

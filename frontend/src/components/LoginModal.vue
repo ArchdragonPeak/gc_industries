@@ -1,30 +1,73 @@
 <template>
-<div class="bg" @click="$emit('bgClicked')"></div>
-    <div class="login-wrapper">
+    <div>
+      <div class="bg" @click="$emit('bgClicked')"></div>
+      <div class="login-wrapper">
         <div>
-            <h1>Anmelden</h1>
+          <h1>Anmelden</h1>
         </div>
         <hr class="funny-bar">
         <div class="modal-row">
-            <input placeholder="Benutzername" type="email"></input>
+          <input v-model="email" placeholder="E-Mail" type="email" />
         </div>
         <div class="modal-row">
-            <input placeholder="Passwort" type="password"></input>
+          <input v-model="password" placeholder="Passwort" type="password" />
         </div>
         <div class="modal-row">
-            <button> Anmelden</button>
+          <button @click="login">Anmelden</button>
         </div>
         <div>
-            <p>Noch nicht Registriert? <b @click="$emit('switchToRegister')"> Hier klicken!</b></p>
+          <p>Noch nicht Registriert? <b @click="$emit('switchToRegister')">Hier klicken!</b></p>
         </div>
+        <div v-if="loginStatus === 'error'" class="error-message">
+          {{ error }}
+        </div>
+        <div v-if="loginStatus === 'success'" class="success-message">
+          Erfolgreich angemeldet!
+        </div>
+      </div>
     </div>
-</template>
-
-<script>
+  </template>
+  
+  <script>
 export default {
-    name: "LoginModal",
-}
-</script>
+  name: "LoginModal",
+  data() {
+    return {
+      email: '',
+      password: '',
+      loginStatus: '',
+      error: ''
+    };
+  },
+  methods: {
+    async login() {
+      try {
+        const response = await fetch(`http://localhost:3000/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: this.email, password: this.password })
+        });
+        if (!response.ok) {
+          throw new Error('Netzwerkantwort war nicht ok');
+        }
+        const data = await response.json(); // Objekt: { token: {}, user: {} }
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('userID', data.user.userID); // Speichere die userID für einfachen Zugriff
+        this.$emit('loggedIn', data.user);
+        this.loginStatus = 'success';
+        this.error = '';
+        console.log("LoginModal: Erfolgreich eingeloggt", data);
+      } catch (error) {
+        this.loginStatus = 'error';
+        this.error = 'Passwort und/oder E-Mail sind falsch';
+      }
+    }
+  }
+};
+  </script>  
 
 <style scoped>
 .modal-row input{

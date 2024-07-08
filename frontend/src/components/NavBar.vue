@@ -1,59 +1,62 @@
 <template>
-    <div class="topnav">
-      
-      <div class="company" @click="this.$router.push({path:'/about'})">
-          <img id="navlogo" alt="Logo" src= "/img/gigachad_logo.png" height="64" width="64">
-          <p class="logotext">GCI</p>
-      </div>
-     
-      <div id="threebuttons">
-        <router-link to="/library">Bibliothek</router-link>
-        <router-link to="/discover">Entdecken</router-link>
-        <router-link to="/profile">Profil</router-link>
-      </div>
-      <div class="profile">
-        <p @click="showLogin()">Profile.name</p>
-        <LoginModal v-if="loginVisible" @bgClicked="showLogin" @switchToRegister="switchModal"></LoginModal>
-        <RegisterModal v-if="registerVisible" @bgClicked="showRegister" @switchToRegister="switchModal"></RegisterModal>
-        
-        <img class="profilepicture" alt="PB" src="/img/profilepicture.png" heigth="64" width="64" @click="this.$router.push({path:'/profile'})">
-      </div>
+  <div class="topnav">
+    <div class="company" @click="this.$router.push({ path: '/about' })">
+      <img id="navlogo" alt="Logo" src="/img/gigachad_logo.png" height="64" width="64">
+      <p class="logotext">GCI</p>
     </div>
+    <div id="threebuttons">
+      <router-link to="/library">Bibliothek</router-link>
+      <router-link to="/discover">Entdecken</router-link>
+      <router-link to="/profile">Profil</router-link>
+    </div>
+    <div class="profile">
+      <p @click="showLogin()">{{ user ? user.username : 'Anmelden' }}</p>
+      <LoginModal v-if="loginVisible" @bgClicked="showLogin" @switchToRegister="switchModal" @loggedIn="handleLogin"></LoginModal>
+      <RegisterModal v-if="registerVisible" @bgClicked="showRegister" @switchToRegister="switchModal"></RegisterModal>
+      <img class="profilepicture" alt="PB" src="/img/profilepicture.png" height="64" width="64" @click="this.$router.push({ path: '/profile' })">
+    </div>
+  </div>
 </template>
 
 <script>
-    import LoginModal from "@/components/LoginModal.vue";
+import LoginModal from "@/components/LoginModal.vue";
 import RegisterModal from "@/components/RegisterModal.vue";
-    export default {
-        name: 'NavBar',
-        components: {
-            LoginModal,
-            RegisterModal
-        },
-        data(){
-          return {
-            loginVisible: false,
-            registerVisible: false
-          }
-        },
-        methods: {
-          showLogin(){
-            this.loginVisible = !this.loginVisible;
-          },
-          showRegister(){
-            this.registerVisible = !this.registerVisible;
-          },
-          switchModal(){
-            if (this.loginVisible) {
-              this.loginVisible = false;
-              this.registerVisible = true;
-            } else {
-              this.loginVisible = true;
-              this.registerVisible = false;
-            }
-          }
-        }
+
+export default {
+  name: 'NavBar',
+  components: {
+    LoginModal,
+    RegisterModal
+  },
+  data() {
+    return {
+      loginVisible: false,
+      registerVisible: false,
+      user: JSON.parse(localStorage.getItem('user')) || null //holt den Benutzer aus dem localStorage als Objekt, andersfalls null
     }
+  },
+  methods: {
+    showLogin() {
+      this.loginVisible = !this.loginVisible; //Schalter für LoginModal, sollte bestenfalls alleine angezeigt werden
+    },
+    showRegister() {
+      this.registerVisible = !this.registerVisible; //RegisterModal, genau wie LoginModal alleine. Niemals zusammen
+    },
+    switchModal() { //verrückte Logik um nur ein Modal anzuzeigen, bei Problem hier nachschauen
+      if (this.loginVisible) {
+        this.loginVisible = false;
+        this.registerVisible = true;
+      } else {
+        this.loginVisible = true;
+        this.registerVisible = false;
+      }
+    },
+    handleLogin(user) {
+      this.user = user;
+      this.loginVisible = false;
+    }
+  }
+}
 </script>
 
 <style scoped>

@@ -3,13 +3,20 @@
         <div class="head">
             <div class="profile">
                 <div class="profile-item">
-                    <img :src="profilepic" alt="Profilbild" height="32" width="32">
+                    <img :src="profilepic || '../img/gigachad_logo.png'" alt="Profilbild" height="32" width="32">
                 </div>
                 <div class="profile-item">
                     <p><b>{{ username }}</b></p>
                 </div>
                 <div class="profile-item" id="date">
                     <p>{{ datum }}</p>
+                </div>
+                <div class="profile-item">
+                    <p id="rating"><b>Bewertung:</b></p> 
+                </div>
+                <div class="profile-item">
+                    <input class="rating-input" type="range" value="1" min="1" max="5" oninput="this.nextElementSibling.value = this.value">
+                    <output id="rating">1</output>
                 </div>
             </div>
         </div>
@@ -32,7 +39,6 @@ export default {
     name: 'WriteCommentItem',
     props: {
         profilepic: String,
-        username: String,
         userID: {
             type: Number,
             required: true
@@ -41,7 +47,8 @@ export default {
     data() {
         return {
             input: '',
-            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" }
+            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" },
+            username: JSON.parse(localStorage.getItem('user'))['username'] // WARNING: USER DESCRETION IS ADVICED lol
         };
     },
     computed: {
@@ -52,24 +59,33 @@ export default {
     methods: {
         async sendMessage() {
             if (this.input.trim()) {
+                const userID = localStorage.getItem('userID'); // Holen der userID aus dem localStorage, schlimm
+                if (!userID) {
+                    console.error('UserID ist nicht verfügbar');
+                    return;
+                }
+                const token = localStorage.getItem('token');
                 try {
                     const response = await fetch(`http://localhost:3000/comments`, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
                         },
                         body: JSON.stringify({
                             gameID: this.$parent.gameID,
-                            userID: this.userID, //test
-                            date: new Date(), // Direktes Datum verwenden
+                            userID: userID,
+                            date: new Date(),
                             text: this.input
                         })
                     });
                     if (!response.ok) {
                         throw new Error('Netzwerkantwort war nicht ok');
                     }
+                    console.log("WriteCommentItem: Nachricht erfolgreich versandt:", this.input)
                     this.$emit('add-comment'); // Emit an event to refresh comments in the parent component
-                    this.input = ''; // Clear the input after sending
+                    this.input = ''; // Macht das Eingabefeld leer
+                    
                 } catch (error) {
                     console.error('Es gab ein Problem mit der Fetch-Operation:', error);
                 }
@@ -83,6 +99,12 @@ export default {
 </script>
 
 <style scoped>
+.rating-input {
+    margin-left: 10px;
+    border-radius: 100%;
+    width: 50px;
+    height: 20px;
+}
 .comment-buttons {
     text-align: right;
     margin-bottom: 10px;
@@ -119,6 +141,11 @@ export default {
 #date {
     color: gray;
     padding-left: 1%;
+    vertical-align: middle;
+}
+#rating {
+    color: gray;
+    padding-left: 10px;
 }
 img {
     border-radius: 50%;

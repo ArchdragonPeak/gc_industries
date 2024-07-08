@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const GameModel = require('../models/GameSchema');
 const CommentModel = require('../models/CommentSchema');
+const authMiddleware = require('../middleware/authMiddleware'); // Stellen Sie sicher, dass die Middleware importiert wird
 
-// GET /games
+// GET /games - Öffentliche Route
 router.get('/', async (req, res) => {
     try {
         const games = await GameModel.find();
@@ -14,9 +15,9 @@ router.get('/', async (req, res) => {
     }
 });
 
-// GET /games/:id
+// GET /games/:id - Öffentliche Route
 router.get('/:id', async (req, res) => {
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     try {
         const game = await GameModel.findOne({ gameID: id });
         if (game) {
@@ -34,8 +35,8 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// POST /games
-router.post('/', async (req, res) => {
+// POST /games - Admin Route, erfordert Authentifizierung
+router.post('/', authMiddleware, async (req, res) => {
     try {
         const game = new GameModel(req.body);
         const savedGame = await game.save();
@@ -46,9 +47,9 @@ router.post('/', async (req, res) => {
     }
 });
 
-// PUT /games/:id
-router.put('/:id', async (req, res) => {
-    const id = parseInt(req.params.id);
+// PUT /games/:id - Admin Route, erfordert Authentifizierung
+router.put('/:id', authMiddleware, async (req, res) => {
+    const id = req.params.id;
     try {
         const updatedGame = await GameModel.findOneAndUpdate({ gameID: id }, req.body, { new: true });
         if (updatedGame) {
@@ -62,9 +63,9 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /games/:id
-router.delete('/:id', async (req, res) => {
-    const id = parseInt(req.params.id);
+// DELETE /games/:id - Admin Route, erfordert Authentifizierung
+router.delete('/:id', authMiddleware, async (req, res) => {
+    const id = req.params.id;
     try {
         const deletedGame = await GameModel.findOneAndDelete({ gameID: id });
         if (deletedGame) {

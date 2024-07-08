@@ -3,7 +3,7 @@
         <div class="head">
             <div class="profile">
                 <div class="profile-item">
-                    <img :src="comment.user?.profilepicture || '../img/gigachad_logo.png'" alt="Profilbild" height="32" width="32">
+                    <img :src="comment.user?.profilepicture || '../img/gigachad_logo.png'" alt="HILFE" height="32" width="32">
                 </div>
                 <div class="profile-item">
                     <p><b>{{ comment.user?.username || 'Unbekannt' }}</b></p>
@@ -11,7 +11,7 @@
                 <div class="profile-item" id="date">
                     <p>{{ prettierDate }}</p>
                 </div>
-                <div class="deleteButton-wrapper" v-if="true">
+                <div class="deleteButton-wrapper" v-if="getUserID">
                     <button class="deleteButton" @click="deleteComment">löschen</button>
                 </div>
             </div>
@@ -29,23 +29,29 @@
 export default {
     name: 'CommentItem',
     props: {
-        comment: Object,
-        isAdmin: true
+        comment: Object, // sollte vom GameView ein funktionierendes Kommentar-Objekt bekommen
+        isAdmin: true // bisschen witzig ist es schon...
     },
     data() {
         return {
-            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" }
+            dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", second: "2-digit" } // macht Datum-Objekt zu: 'dd.mm.yyyy, hh:mm:ss' weils stabil aussieht
         };
     },
     methods: {
         async deleteComment() {
             try {
+                const token = localStorage.getItem('token'); // Retrieve the token from local storage
                 const response = await fetch(`http://localhost:3000/comments/${this.comment.commentID}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
                 if (!response.ok) {
                     throw new Error('Netzwerkantwort war nicht ok');
                 }
+                console.log("CommentItem: Dieser Kommentar wurde gelöscht:", this.comment)
                 this.$emit('delete-comment'); // Emit an event to refresh comments in the parent component
             } catch (error) {
                 console.error('Es gab ein Problem mit der Fetch-Operation:', error);
@@ -58,7 +64,11 @@ export default {
                 return 'Datum nicht verfügbar';
             }
             const date = new Date(this.comment.date);
-            return date.toLocaleDateString("de-DE", this.dateOptions);
+            return date.toLocaleDateString("de-DE", this.dateOptions); // hier werden Datum-Objekte gekocht. Für Optionen oben schauen
+        },
+        getUserID() {
+            const user = localStorage.getItem('user');
+            return user ? JSON.parse(user)['userID'] : false;
         }
     }
 };

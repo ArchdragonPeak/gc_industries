@@ -1,15 +1,18 @@
 <template>
-  <h1 class="title">{{ game.name }}</h1>
+  <h1 class="title">{{ game.name || 'Spieltitel nicht gefunden ;(' }}</h1>
 
   <div class="game-wrapper">
-      <div class="left"></div>
-      
-      <div class="main">
-          <img src="../../public/img/test_game.jpg" height="700" width="1200">
+    <div class="left"></div>
+    <div class="main">
+      <img src="../../public/img/test_game.jpg" height="700" width="1200">
+      <div class="rating">
+        <p>Bewertung: {{ game.rating || '?' }}</p>
       </div>
-      
-      <div class="right">Spielanleitung</div>
-      
+    </div>
+    <div class="right">
+      <h3>Spielanleitung</h3>
+      <p class="instruction">{{ game.instruction || 'Es wurde keine Spielanleitung hinterlegt. Dies könnte ein Serverfehler sein.' }}</p>
+    </div>
   </div>
 
   <div class="info-wrapper">
@@ -17,24 +20,22 @@
     <div class="description">
       <div class="description-text">
         <p><b>Beschreibung:</b></p>
-        <p>{{ game.description }}</p>
+        <p>{{ game.description || 'Es wurde keine Beschreibung hinterlegt. Dies könnte ein Serverfehler sein.' }}</p>
       </div>
     </div>
     <hr style="width: 80%">
     <div class="comments">
       <div class="comments-text">
         <h2 style="text-align: center">Kommentare</h2>
-        <WriteCommentItem @add-comment="fetchComments" userID=1></WriteCommentItem>
+        <WriteCommentItem v-if="userID" @add-comment="fetchComments" :userID="userID"></WriteCommentItem>
         <CommentItem v-for="comment in comments"
           :key="comment.commentID"
           :comment="comment"
           @delete-comment="fetchComments"
-          >
-        </CommentItem>
+        ></CommentItem>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -49,16 +50,14 @@ export default {
   },
   data() {
     return {
-      game: {
-        type: Object,
-        required: true,
-      },
-      comments: []
+      game: {},
+      comments: [],
+      userID: this.getUserID()
     };
   },
   computed: {
     gameID() {
-      return this.$route.params.id;
+      return this.$route.params.id; // holt die gameID ausm URL-Pfad raus
     }
   },
   methods: {
@@ -69,8 +68,8 @@ export default {
           throw new Error('Netzwerkantwort war nicht ok');
         }
         const data = await response.json();
-        this.game = data.game;
-        console.log(this.game);
+        this.game = data;
+        console.log('GameView hat Spiel geholt:', this.game);
       } catch (error) {
         console.error('Spiel konnte nicht abgerufen werden. Fetch-Operation:', error);
       }
@@ -78,37 +77,19 @@ export default {
     async fetchComments() {
       try {
         const response = await fetch(`http://localhost:3000/comments/${this.gameID}`);
-        if (!response.ok) {
+        if (!response.ok & response.status != 404) {
           throw new Error('Netzwerkantwort war nicht ok');
         }
         const data = await response.json();
         this.comments = data;
-        console.log(this.comments);
+        console.log('GameView hat Kommentare geholt:', this.comments);
       } catch (error) {
         console.error('Kommentare konnten nicht abgerufen werden. Fetch-Operation:', error);
       }
     },
-    async addComment(userID, message) {
-      try {
-        const response = await fetch(`http://localhost:3000/comments`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            gameID: this.gameID,
-            userID: userID,
-            date: new Date(),
-            text: message
-          })
-        });
-        if (!response.ok) {
-          throw new Error('Netzwerkantwort war nicht ok');
-        }
-        this.fetchComments(); // Refresh comments after adding a new one
-      } catch (error) {
-        console.error('Es gab ein Problem mit der Fetch-Operation:', error);
-      }
+    getUserID() {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user)['userID'] : null;
     }
   },
   mounted() {
@@ -119,6 +100,23 @@ export default {
 </script>
 
 <style scoped>
+.rating {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 14px;
+  text-align: right;
+}
+.rating p{
+  margin-top: 0px;
+  margin-bottom: 0px;
+  
+}
+.instruction {
+  font-size: 22px;
+  text-align: left;
+  margin-left: 1%;
+  margin-right: 1%;
+}
 .description {
   width: 100%;
   border-radius: 12px;

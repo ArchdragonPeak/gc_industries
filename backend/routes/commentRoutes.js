@@ -1,9 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const CommentModel = require('../models/CommentSchema');
-const UserModel = require('../models/UserSchema');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// GET /comments/:gameID
+// GET /comments - Öffentliche Route
+router.get('/', async (req, res) => {
+    try {
+        const comments = await CommentModel.find();
+        res.json(comments);
+    } catch (error) {
+        console.error('Error retrieving comments:', error);
+        res.status(500).send('Error retrieving comments');
+    }
+});
+
+// GET /comments/:gameID - Öffentliche Route
 router.get('/:gameID', async (req, res) => {
     const gameID = parseInt(req.params.gameID);
     try {
@@ -22,7 +33,7 @@ router.get('/:gameID', async (req, res) => {
     }
 });
 
-// GET /comments/:id
+// GET /comments/:id - Öffentliche Route
 router.get('/comment/:id', async (req, res) => {
     const id = parseInt(req.params.id);
     try {
@@ -42,8 +53,8 @@ router.get('/comment/:id', async (req, res) => {
     }
 });
 
-// POST /comments
-router.post('/', async (req, res) => {
+// POST /comments - Geschützte Route (Authentifizierung erforderlich)
+router.post('/', authMiddleware, async (req, res) => {
     try {
         const comment = new CommentModel(req.body);
         const savedComment = await comment.save();
@@ -54,8 +65,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-// PUT /comments/:id
-router.put('/:id', async (req, res) => {
+// PUT /comments/:id - Geschützte Route (Authentifizierung erforderlich)
+router.put('/:id', authMiddleware, async (req, res) => {
     const id = parseInt(req.params.id);
     try {
         const updatedComment = await CommentModel.findOneAndUpdate({ commentID: id }, req.body, { new: true });
@@ -70,8 +81,8 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// DELETE /comments/:id
-router.delete('/:id', async (req, res) => {
+// DELETE /comments/:id - Geschützte Route (Authentifizierung erforderlich)
+router.delete('/:id', authMiddleware, async (req, res) => {
     const id = parseInt(req.params.id);
     try {
         const deletedComment = await CommentModel.findOneAndDelete({ commentID: id });

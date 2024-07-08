@@ -1,32 +1,59 @@
 <template>
-<div class="bg" @click="$emit('bgClicked')"></div>
-    <div class="register-wrapper">
-        <div>
-            <h1>Registrieren</h1>
+    <div class="bg" @click="$emit('bgClicked')"></div>
+        <div class="register-wrapper">
+            <div>
+                <h1>Registrieren</h1>
+            </div>
+            <hr class="funny-bar">
+            <div class="modal-row">
+                <input placeholder="Benutzername" type="text" v-model="username"></input>
+            </div>
+            <div class="modal-row">
+                <input placeholder="E-Mail" type="email" v-model="email"></input>
+            </div>
+            <div class="modal-row">
+                <input placeholder="Passwort" type="password" v-model="password"></input>
+            </div>
+            <div class="modal-row">
+                <button @click="register"> Registrieren</button>
+            </div>
+            <div class="register-text">
+                <p>Schon Registriert? <b @click="$emit('switchToRegister')"> Hier klicken!</b></p>
+            </div>
         </div>
-        <hr class="funny-bar">
-        <div class="modal-row">
-            <input placeholder="Benutzername" type="email"></input>
-        </div>
-        <div class="modal-row">
-            <input placeholder="E-Mail" type="email"></input>
-        </div>
-        <div class="modal-row">
-            <input placeholder="Passwort" type="password"></input>
-        </div>
-        <div class="modal-row">
-            <button> Registrieren</button>
-        </div>
-        <div class="register-text">
-            <p>Schon Registriert? <b @click="$emit('switchToRegister')"> Hier klicken!</b></p>
-        </div>
-    </div>
 </template>
-
+    
 <script>
-export default {
-    name: "RegisterModal"
-}
+    export default {
+        name: "RegisterModal",
+        data() {
+            return {
+                username: '',
+                email: '',
+                password: ''
+            };
+        },
+        methods: {
+            async register() {
+                try {
+                    const response = await fetch('http://localhost:3000/auth/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username: this.username, email: this.email, password: this.password })
+                    });
+                    if (!response.ok) {
+                        throw new Error('Registration failed');
+                    }
+                    this.$emit('register-success');
+                    console.log("RegisterModal: Erfolgreich registriert", username, email, password)
+                } catch (error) {
+                    console.error('Error during registration:', error);
+                }
+            }
+        }
+    }
 </script>
 
 <style scoped>
