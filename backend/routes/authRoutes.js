@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
 
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
-    console.log("--Versuchte Registrierung--", req.body);
+    console.log("--Versuchte Registrierung--\n", req.body);
     try {
         const existingUser = await UserModel.findOne({ email });
         if (existingUser) {
@@ -41,12 +41,12 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        const newUser = new UserModel({ username, email, password });
+        const newUser = new UserModel({ username, email, password }); //pre Hook 
         await newUser.save();
 
         const token = jwt.sign({ userId: newUser.userID }, JWT_SECRET);
         res.json({ token, user: newUser });
-        console.log("User has been added", newUser);
+        console.log("User has been added\n", newUser);
 
     } catch (error) {
         console.error('Error during registration:', error);
