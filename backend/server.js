@@ -32,8 +32,8 @@ const authMiddleware = require('./middleware/authMiddleware');
 
 app.use('/auth', authRoutes); // Authentifizierungsrouten
 app.use('/games', gameRoutes); // Öffentliche Route
-app.use('/comments', commentRoutes); // Geschützte Route
-app.use('/users', authMiddleware, userRoutes);
+app.use('/comments', commentRoutes); // manche Routen geschützt
+app.use('/users', authMiddleware, userRoutes); // alles geschützt
 
 const UserModel = require('./models/UserSchema');
 

@@ -33,7 +33,7 @@ router.get('/:gameID', async (req, res) => {
     }
 });
 
-// GET /comments/:id - Öffentliche Route
+// GET /comments/comment/:id - Öffentliche Route
 router.get('/comment/:id', async (req, res) => {
     const id = parseInt(req.params.id);
     try {
@@ -53,7 +53,7 @@ router.get('/comment/:id', async (req, res) => {
     }
 });
 
-// POST /comments - Geschützte Route (Authentifizierung erforderlich)
+// POST /comments - Geschützte Route 
 router.post('/', authMiddleware, async (req, res) => {
     try {
         const comment = new CommentModel(req.body);
@@ -65,7 +65,7 @@ router.post('/', authMiddleware, async (req, res) => {
     }
 });
 
-// PUT /comments/:id - Geschützte Route (Authentifizierung erforderlich)
+// PUT /comments/:id - Geschützte Route - unnöntige Route!
 router.put('/:id', authMiddleware, async (req, res) => {
     const id = parseInt(req.params.id);
     try {
@@ -81,7 +81,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     }
 });
 
-// DELETE /comments/:id - Geschützte Route (Authentifizierung erforderlich)
+// DELETE /comments/:id - Geschützte Route
 router.delete('/:id', authMiddleware, async (req, res) => {
     const id = parseInt(req.params.id);
     try {
