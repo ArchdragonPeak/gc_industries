@@ -41,4 +41,33 @@ router.post('/', async (req, res) => {
     }
 });
 
+// POST /set-favgame
+router.post('/set-favgame', async (req, res) => {
+    const { userID, favgame } = req.body;
+
+    const numericUserID = Number(userID);
+    const numericFavgame = Number(favgame);
+
+    if (isNaN(numericUserID) || isNaN(numericFavgame)) {
+        return res.status(400).json({ message: 'userID und favgame müssen gültige Zahlen sein' });
+    }
+
+    try {
+        const updatedUser = await UserModel.findOneAndUpdate(
+            { userID: userID },
+            { favgame: favgame },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Benutzer nicht gefunden' });
+        }
+
+        res.json({ message: 'Lieblingsspiel erfolgreich aktualisiert', user: updatedUser });
+    } catch (error) {
+        console.error('Fehler beim Aktualisieren des Lieblingsspiels:', error);
+        res.status(500).json({ message: 'Interner Serverfehler' });
+    }
+});
+
 module.exports = router;

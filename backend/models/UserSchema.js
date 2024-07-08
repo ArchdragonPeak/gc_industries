@@ -8,8 +8,8 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, unique: true},
     password: { type: String, required: true },
     profilepicture: String,
-    favgames: [Number]
-    
+    favgame: Number
+
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 UserSchema.virtual('id').get(function() {
