@@ -7,18 +7,18 @@
   
       <div class="main">
         <h1>Einstellungen</h1>
-  
+
         <div class="grid-container">
           <div class="grid-item">Benutzername</div>
           <div class="grid-item">{{ user.username }}</div>
-          <div class="grid-item"><button id="username-button">Ändern</button></div>
-  
+          <div class="grid-item"><button @click="changeUsername" id="username-button">Ändern</button></div>  
+
           <div class="grid-item">E-Mail</div>
           <div class="grid-item">{{ user.email }}</div>
-          <div class="grid-item"><button id="email-button">Ändern</button></div>
-  
+          <div class="grid-item"><button @click="changeEmail" id="email-button">Ändern</button></div>  
+
           <div class="grid-item">Passwort</div>
-          <div class="grid-item"><button id="pass-button">Passwort ändern</button></div>
+          <div class="grid-item"><button @click="changePassword" id="pass-button">Passwort ändern</button></div>
           <div class="grid-item"></div>
         </div>
       </div>
@@ -44,34 +44,78 @@
       this.loadUserProfile();
     },
     methods: {
-      async loadUserProfile() { //größte Sicherheitspanne aller Zeiten. Es können wahllos Passwörter abgefragt werden
-        const userID = localStorage.getItem('userID');
-        const token = localStorage.getItem('token');
-        if (!userID || !token) {
-          console.error('UserID oder Token kaputt. userID|token: ', userID, '|', token);
-          return;
-        }
-  
-        try {
-          const response = await fetch(`http://localhost:3000/users/${userID}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
-          });
-          if (!response.ok) {
-            throw new Error('Netzwerkantwort war nicht ok');
-          }
-          const data = await response.json();
-          this.user = data;
-          console.log("ProfileView: Profil wurde geladen:", this.user);
-        } catch (error) {
-          console.error('Es gab ein Problem mit der Fetch-Operation:', error);
-        }
+      async loadUserProfile() {
+      const userID = localStorage.getItem('userID');
+      const token = localStorage.getItem('token');
+      if (!userID || !token) {
+        console.error('UserID oder Token nicht vorhanden.');
+        return;
       }
+
+      try {
+        const response = await fetch(`http://localhost:3000/users/${userID}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        this.user = data;
+        console.log("Profil geladen:", this.user);
+      } catch (error) {
+        console.error('Es gab ein Problem mit der Fetch-Operation:', error);
+      }
+    },
+      async changeUsername() {
+      const newUsername = prompt("Enter new username:");
+      if (newUsername) {
+        await this.updateProfile({ username: newUsername });
+      }
+    },
+
+    async changeEmail() {
+      const newEmail = prompt("Enter new email:");
+      if (newEmail) {
+        await this.updateProfile({ email: newEmail });
+      }
+    },
+
+    async updateProfile(updateData) {
+    const userID = localStorage.getItem('userID');
+    const token = localStorage.getItem('token');
+    console.log(token);
+
+    try {
+      const response = await fetch(`http://localhost:3000/users/${userID}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updateData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      this.user = { ...this.user, ...data }; // Aktualisiere das lokale Benutzerobjekt mit den neuen Daten
+      console.log('Server response:', data); // Logge die Antwort des Servers
+      alert("Profil erfolgreich aktualisiert!");
+    } catch (error) {
+      console.error('There was a problem updating the profile:', error);
+      alert("Profil konnte nicht aktualisiert werden. Bitte versuche es erneut.");
     }
-  };
+  }
+}
+};
   </script>
 
 <style scoped>

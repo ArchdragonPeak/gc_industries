@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const UserModel = require('../models/UserSchema');
+const bcrypt = require('bcrypt');
+const authMiddleware = require('../middleware/authMiddleware'); // Importiere die Middleware
 
 // GET /users
-router.get('/', async (req, res) => {
+router.get('/', authMiddleware, async (req, res) => {
     try {
         const users = await UserModel.find();
         res.json(users);
@@ -14,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET /users/:id
-router.get('/:id', async (req, res) => {
+router.get('/:id', authMiddleware, async (req, res) => {
     const id = parseInt(req.params.id);
     try {
         const user = await UserModel.findOne({ userID: id });
@@ -30,7 +32,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /users
-router.post('/', async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     try {
         const user = new UserModel(req.body);
         const savedUser = await user.save();
@@ -42,7 +44,7 @@ router.post('/', async (req, res) => {
 });
 
 // POST /set-favgame
-router.post('/set-favgame', async (req, res) => {
+router.post('/set-favgame', authMiddleware, async (req, res) => {
     const { userID, favgame } = req.body;
 
     const numericUserID = Number(userID);
@@ -67,6 +69,37 @@ router.post('/set-favgame', async (req, res) => {
     } catch (error) {
         console.error('Fehler beim Aktualisieren des Lieblingsspiels:', error);
         res.status(500).json({ message: 'Interner Serverfehler' });
+    }
+});
+
+// PUT / Ändert Name, Email oder Passwort
+router.put('/:id', authMiddleware, async (req, res) => {
+    const { id } = req.params;
+    const { username, email, currentPassword, newPassword } = req.body;
+
+    try {
+        const user = await UserModel.findOne({ userID: id });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (username) user.username = username;
+        if (email) user.email = email;
+
+        if (currentPassword && newPassword) {
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isMatch) {
+                return res.status(400).json({ message: 'Current password is incorrect' });
+            }
+            user.password = await bcrypt.hash(newPassword, 10);
+        }
+
+        await user.save();
+
+        res.json({ username: user.username, email: user.email });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
 
