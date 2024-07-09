@@ -8,7 +8,7 @@
             <p id="tags">{{ stringifytags() }}</p>
         </div>
         <div class="rating">
-            <p id="rating">Bewertung: {{ rating }}</p>
+            <p id="rating"></p>
         </div>
     </div>
 </template>
