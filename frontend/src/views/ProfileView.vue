@@ -2,7 +2,7 @@
     <h1 class="title">Mein Profil</h1>
     <div class="wrapper">
       <div class="left">
-        Left
+        
       </div>
   
       <div class="main">
@@ -24,7 +24,7 @@
       </div>
   
       <div class="right">
-        Right
+        
       </div>
     </div>
   </template>
@@ -84,6 +84,19 @@
       if (newEmail) {
         await this.updateProfile({ email: newEmail });
       }
+    },
+
+    async changePassword() {
+      const currentPassword = prompt("Enter current password:");
+      const newPassword = prompt("Enter new password:");
+      const confirmPassword = prompt("Confirm new password:");
+
+      if (newPassword !== confirmPassword) {
+        alert("New passwords do not match!");
+        return;
+      }
+
+      await this.updateProfile({ currentPassword, newPassword });
     },
 
     async updateProfile(updateData) {
