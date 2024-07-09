@@ -15,8 +15,8 @@
                     <p id="rating"><b>Bewertung:</b></p> 
                 </div>
                 <div class="profile-item">
-                    <input class="rating-input" type="range" value="1" min="1" max="5" oninput="this.nextElementSibling.value = this.value">
-                    <output id="rating">1</output>
+                    <input class="rating-input" type="range" value="1" min="1" max="5" v-model="rating">
+                    <output id="rating">{{ rating }}</output>
                 </div>
             </div>
         </div>
@@ -47,6 +47,7 @@ export default {
     data() {
         return {
             input: '',
+            rating: 1, // initialisierte Bewertung
             dateOptions: { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" },
             username: JSON.parse(localStorage.getItem('user'))['username'] // WARNING: USER DESCRETION IS ADVICED lol
         };
@@ -76,7 +77,8 @@ export default {
                             gameID: this.$parent.gameID,
                             userID: userID,
                             date: new Date(),
-                            text: this.input
+                            text: this.input,
+                            rating: this.rating
                         })
                     });
                     if (!response.ok) {
@@ -85,7 +87,7 @@ export default {
                     console.log("WriteCommentItem: Nachricht erfolgreich versandt:", this.input)
                     this.$emit('add-comment'); // Emit an event to refresh comments in the parent component
                     this.input = ''; // Macht das Eingabefeld leer
-                    
+                    this.rating = 1; // Setze die Bewertung zurück
                 } catch (error) {
                     console.error('Es gab ein Problem mit der Fetch-Operation:', error);
                 }
@@ -93,6 +95,7 @@ export default {
         },
         cancelMessage() {
             this.input = '';
+            this.rating = 1; // Setze die Bewertung zurück
         }
     }
 };

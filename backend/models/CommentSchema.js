@@ -6,8 +6,8 @@ const CommentSchema = new mongoose.Schema({
     gameID: { type: Number, ref: 'GameModel', required: true },
     userID: { type: Number, ref: 'UserModel', required: true },
     date: { type: Date, default: Date.now },
-    text: { type: String, required: true }
-    // rating: Number
+    text: { type: String, required: true },
+    rating: { type: Number, min: 1, max: 5, required: true }
 }, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 CommentSchema.virtual('user', {

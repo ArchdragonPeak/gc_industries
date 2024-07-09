@@ -11,6 +11,8 @@
                 <div class="profile-item" id="date">
                     <p>{{ prettierDate }}</p>
                 </div>
+                <div class="profile-item" id="rating">
+                    <p>{{ comment.rating ? displayStars(comment.rating) : 'Keine Bewertung' }}</p>                </div>
                 <div class="deleteButton-wrapper" v-if="getUserID">
                     <button class="deleteButton" @click="deleteComment">löschen</button>
                 </div>
@@ -56,7 +58,19 @@ export default {
             } catch (error) {
                 console.error('Es gab ein Problem mit der Fetch-Operation:', error);
             }
+        },
+        displayStars(rating) {
+        console.log('Rating:', rating);
+        let stars = '';
+        for (let i = 0; i < rating; i++) {
+            stars += '★';
         }
+        for (let i = rating; i < 5; i++) {
+            stars += '☆';
+        }
+        return stars;
+    }
+
     },
     computed: {
         prettierDate() {
@@ -125,5 +139,10 @@ img {
 .text {
     padding-bottom: 12px;
     margin-top: 0px;
+}
+#rating {
+    color: gold;
+    text-shadow: 1px 1px 0 #000, 1px 1px 0 #000, 1px 1px 0 #000, 1px 1px 0 #000;
+    padding-left: 1%;
 }
 </style>
