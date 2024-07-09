@@ -36,11 +36,11 @@ router.get('/:gameID', async (req, res) => {
 // GET /comments/comment/:id - Öffentliche Route
 router.get('/comment/:id', async (req, res) => {
     const id = parseInt(req.params.id);
+    console.log("HAAAAAAAAAAAAAAAAA", id);
     try {
         const comment = await CommentModel.findOne({ commentID: id }).populate({
-            path: 'userID',
-            model: 'UserModel',
-            select: 'username profilepicture'
+            path: 'user',
+            select: 'username profilepicture userID'
         });
         if (comment) {
             res.json(comment);
