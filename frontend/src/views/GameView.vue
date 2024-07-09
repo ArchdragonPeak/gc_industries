@@ -1,7 +1,7 @@
 <template>
   <h1 class="title">{{ game.name || "Spieltitel nicht gefunden ;(" }}</h1>
   <div class="rating">
-    <p>Bewertung: {{ game.rating || "?" }}</p>
+    <p>Bewertung: {{ calculateAverageRating().toFixed(2)+'★' || "?" }}</p>
   </div>
 
   <div class="game-wrapper" @click="enableScrolling">
@@ -175,6 +175,18 @@ export default {
       } catch (error) {
         console.error("Fehler beim Setzen des Lieblingsspiels:", error);
       }
+    },
+    calculateAverageRating() {
+      if (this.comments.length === 0) {
+        return 0;
+      }
+
+      let sum = 0;
+      for (let i = 0; i < this.comments.length; i++) {
+        sum += this.comments[i].rating;
+      }
+
+      return sum / this.comments.length;
     },
   },
   mounted() {
