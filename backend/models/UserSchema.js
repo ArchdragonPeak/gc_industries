@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const authMiddleware = require('../middleware/authMiddleware');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const UserSchema = new mongoose.Schema({
@@ -17,7 +18,7 @@ UserSchema.virtual('id').get(function() {
 });
 
 UserSchema.pre('save', async function(next) {
-    if (this.isModified('password')) {
+    if (this.isModified('password') && this.isNew) {
         this.password = await bcrypt.hash(this.password, 10);
     }
     next();
